@@ -1,49 +1,270 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vibe2026 - L'expérience numérique de demain">
-    <title>Vibe2026 | Accueil</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIBE — Réseau LGBTQ+ Canada</title>
+<meta name="description" content="THE NEW VIBE. Mtl · Qc · Ott · Tor. A 100% verified LGBTQ+ platform. No fakes. No bots. Just real people, safely.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap');
+:root{--gold:#d4af37;--gold-light:#e8cc6a;--black:#050505;--dark:#0a0a0a;--surface:#111111;--border:rgba(212,175,55,0.2);--text:#e8e0d0;--muted:rgba(232,224,208,0.5);--error:#c0392b;--success:#27ae60}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Mono',monospace;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 30px;background:linear-gradient(to bottom,rgba(5,5,5,0.95),transparent)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;letter-spacing:0.3em;color:var(--gold)}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:0.7rem;letter-spacing:0.15em;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:#27ae60;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+.nav-btn{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);border:1px solid var(--gold);background:transparent;padding:8px 18px;cursor:pointer;transition:all 0.3s;text-transform:uppercase}
+.nav-btn:hover{background:var(--gold);color:var(--black)}
+.page{display:none;min-height:100vh;position:relative;z-index:1}
+.page.active{display:block}
+#page-home{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:100px 20px 60px;text-align:center}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,12vw,9rem);font-weight:300;letter-spacing:0.25em;color:var(--gold);line-height:1;margin-bottom:20px;text-shadow:0 0 60px rgba(212,175,55,0.3)}
+.hero-sub{font-size:0.65rem;letter-spacing:0.35em;color:var(--muted);margin-bottom:8px;text-transform:uppercase}
+.rainbow{width:280px;height:3px;background:linear-gradient(to right,#e74c3c,#e67e22,#f1c40f,#2ecc71,#3498db,#9b59b6,#e91e8c,#00bcd4);margin:30px auto;border-radius:2px}
+.hero-actions{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;margin:30px auto 0}
+.btn-primary{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;background:var(--gold);color:var(--black);border:none;padding:18px 30px;cursor:pointer;font-weight:700;transition:all 0.3s;width:100%}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-secondary{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:18px 30px;cursor:pointer;transition:all 0.3s;width:100%}
+.btn-secondary:hover{background:rgba(212,175,55,0.1)}
+.features{padding:60px 20px;max-width:400px;margin:0 auto}
+.feat{border:1px solid var(--border);padding:24px;margin-bottom:16px;background:rgba(212,175,55,0.03);transition:all 0.3s}
+.feat:hover{border-color:var(--gold);background:rgba(212,175,55,0.07)}
+.feat-label{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.feat-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--text);margin-bottom:8px}
+.feat-desc{font-size:0.65rem;line-height:1.7;color:var(--muted);letter-spacing:0.05em}
+#page-inscription,#page-connexion{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px 60px}
+.form-box{width:100%;max-width:400px;border:1px solid var(--border);padding:40px 30px;background:rgba(10,10,10,0.9)}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;text-align:center}
+.form-sub{font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);text-align:center;margin-bottom:30px;text-transform:uppercase}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:0.6rem;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.field input,.field select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:0.8rem;padding:10px 0;outline:none;transition:border-color 0.3s;-webkit-appearance:none}
+.field select option{background:var(--dark)}
+.field input:focus,.field select:focus{border-bottom-color:var(--gold)}
+.field input::placeholder{color:var(--muted);font-size:0.75rem}
+.chk{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.chk input[type=checkbox]{width:16px;height:16px;min-width:16px;accent-color:var(--gold);margin-top:2px}
+.chk label{font-size:0.62rem;line-height:1.6;color:var(--muted);letter-spacing:0.05em;cursor:pointer}
+.chk a{color:var(--gold);text-decoration:none}
+.alert{padding:12px 16px;font-size:0.65rem;letter-spacing:0.1em;line-height:1.6;margin-bottom:16px;display:none;font-family:'Space Mono',monospace}
+.alert.error{background:rgba(192,57,43,0.15);border:1px solid var(--error);color:#e74c3c}
+.alert.success{background:rgba(39,174,96,0.15);border:1px solid var(--success);color:#2ecc71}
+.alert.show{display:block}
+.form-switch{text-align:center;margin-top:20px;font-size:0.62rem;color:var(--muted);letter-spacing:0.1em}
+.form-switch a{color:var(--gold);text-decoration:none;cursor:pointer}
+#page-dashboard{padding:100px 20px 120px;max-width:500px;margin:0 auto}
+.dash-header{text-align:center;margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid var(--border)}
+.dash-greeting{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.dash-name{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--text)}
+.section-title{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.dash-section{margin-bottom:30px}
+.salon-item{border:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;transition:all 0.3s;cursor:pointer;margin-bottom:10px}
+.salon-item:hover{border-color:var(--gold);background:rgba(212,175,55,0.05)}
+.salon-name{font-size:0.75rem;letter-spacing:0.1em;color:var(--text)}
+.salon-city{font-size:0.6rem;color:var(--muted);margin-top:3px;letter-spacing:0.1em}
+.salon-type{font-size:0.55rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;border:1px solid var(--border);padding:3px 8px}
+.ange-btn{width:100%;background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.4);color:#e74c3c;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;padding:16px;cursor:pointer;transition:all 0.3s}
+.ange-btn:hover{background:rgba(192,57,43,0.2);border-color:#e74c3c}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(212,175,55,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:none;background:rgba(5,5,5,0.97);border-top:1px solid var(--border);padding:12px 0 20px}
+.bottom-nav.show{display:flex}
+.bnav{display:flex;width:100%;justify-content:space-around}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;opacity:0.5;transition:opacity 0.3s;background:none;border:none;color:var(--text);font-family:'Space Mono',monospace}
+.bnav-item.active{opacity:1;color:var(--gold)}
+.bnav-icon{font-size:1.2rem}
+.bnav-label{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase}
+#loading{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity 0.5s}
+#loading.hide{opacity:0;pointer-events:none}
+.loading-logo{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;letter-spacing:0.5em;color:var(--gold);animation:lp 1.5s ease-in-out infinite}
+@keyframes lp{0%,100%{opacity:0.3}50%{opacity:1}}
+</style>
 </head>
 <body>
 
-    <header>
-        <nav class="navbar" aria-label="Navigation principale">
-            <div class="logo">VIBE<span>2026</span></div>
-            <ul class="nav-links">
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#concept">Concept</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<div id="loading"><div class="loading-logo">V I B E</div></div>
+<canvas id="c"></canvas>
 
-    <main>
-        <section id="accueil" aria-labelledby="accueil-heading">
-            <div class="container">
-                <h1 id="accueil-heading">Bienvenue sur Vibe2026</h1>
-                <p>Découvrez les nouvelles tendances et l'énergie de l'année 2026.</p>
-                <a href="#concept" class="btn" aria-label="Explorer notre vision">Explorer</a>
-            </div>
-        </section>
+<nav id="navbar">
+  <div class="nav-logo">✦ V I B E</div>
+  <div class="nav-status"><div class="dot"></div><span id="clock"></span></div>
+  <button class="nav-btn" id="nav-btn" onclick="go('inscription')">REJOINDRE</button>
+</nav>
 
-        <section id="concept" class="container" aria-labelledby="concept-heading">
-            <h2 id="concept-heading">Notre Vision</h2>
-            <p>Le projet Vibe2026 est conçu pour connecter les idées et les gens.</p>
-        </section>
-    </main>
+<div id="page-home" class="page active">
+  <div class="hero-title">V I B E</div>
+  <div class="hero-sub">Réseau LGBTQ+ de nouvelle génération</div>
+  <div class="hero-sub">Né à Québec · Canada · 2026</div>
+  <div class="rainbow"></div>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="go('inscription')">REJOINDRE VIBE</button>
+    <button class="btn-secondary" onclick="go('connexion')">SE CONNECTER</button>
+  </div>
+  <div class="features">
+    <div class="feat"><div class="feat-label">✦ Sécurité</div><div class="feat-title">Mode Ange</div><div class="feat-desc">Triple-tap d'urgence. GPS + audio envoyés à ton contact de confiance en temps réel.</div></div>
+    <div class="feat"><div class="feat-label">✦ Communauté</div><div class="feat-title">Salons par ville</div><div class="feat-desc">Montréal · Québec · Toronto · Ottawa · Vancouver. Des espaces réels pour des connexions réelles.</div></div>
+    <div class="feat"><div class="feat-label">✦ Intimité</div><div class="feat-title">Mode Fantôme</div><div class="feat-desc">Navigue en silence. Aucune trace. Tu contrôles quand tu existes.</div></div>
+    <div class="feat"><div class="feat-label">✦ Fondateurs</div><div class="feat-title">500 places — 99$/an</div><div class="feat-desc">Accès à vie. Salon VIP exclusif. Priorité absolue.</div></div>
+  </div>
+</div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Vibe2026 - Tous droits réservés.</p>
-        </div>
-    </footer>
+<div id="page-inscription" class="page">
+  <div class="form-box">
+    <div class="form-title">REJOINDRE</div>
+    <div class="form-sub">Créer ton compte VIBE</div>
+    <div class="alert error" id="ie"></div>
+    <div class="alert success" id="is"></div>
+    <div class="field"><label>Courriel</label><input type="email" id="i-email" placeholder="toi@example.com"></div>
+    <div class="field"><label>Mot de passe</label><input type="password" id="i-pw" placeholder="8 caractères minimum"></div>
+    <div class="field"><label>Prénom</label><input type="text" id="i-nom" placeholder="Ton prénom"></div>
+    <div class="field"><label>Ta ville</label><select id="i-ville"><option value="">— Choisir —</option><option>Montréal</option><option>Québec</option><option>Toronto</option><option>Ottawa</option><option>Vancouver</option><option>Autre</option></select></div>
+    <div class="field"><label>Identité</label><select id="i-id"><option value="">— Choisir —</option><option>Gay</option><option>Lesbienne</option><option>Bisexuel·le</option><option>Trans</option><option>Non-binaire</option><option>Queer</option><option>Allié·e</option><option>Autre</option></select></div>
+    <div class="chk"><input type="checkbox" id="i-terms"><label for="i-terms">J'accepte les <a href="#">conditions</a> et la <a href="#">politique de confidentialité</a>.</label></div>
+    <div class="chk"><input type="checkbox" id="i-ange" checked><label for="i-ange">Activer l'ange gardien — contact de confiance pour le triple-tap d'urgence.</label></div>
+    <button class="btn-primary" id="i-btn" onclick="inscrire()">CRÉER MON COMPTE VIBE ✦</button>
+    <div class="form-switch">Déjà membre ? <a onclick="go('connexion')">Se connecter</a></div>
+  </div>
+</div>
 
-    <script src="script.js"></script>
+<div id="page-connexion" class="page">
+  <div class="form-box">
+    <div class="form-title">CONNEXION</div>
+    <div class="form-sub">Bienvenue de retour</div>
+    <div class="alert error" id="ce"></div>
+    <div class="alert success" id="cs"></div>
+    <div class="field"><label>Courriel</label><input type="email" id="c-email" placeholder="toi@example.com"></div>
+    <div class="field"><label>Mot de passe</label><input type="password" id="c-pw" placeholder="••••••••"></div>
+    <button class="btn-primary" id="c-btn" onclick="connecter()">SE CONNECTER</button>
+    <div class="form-switch" style="margin-top:12px"><a onclick="resetPw()">Mot de passe oublié ?</a></div>
+    <div class="form-switch">Pas encore membre ? <a onclick="go('inscription')">Rejoindre VIBE</a></div>
+  </div>
+</div>
+
+<div id="page-dashboard" class="page">
+  <div class="dash-header">
+    <div class="dash-greeting">✦ Bienvenue</div>
+    <div class="dash-name" id="d-nom">—</div>
+    <div style="font-size:0.6rem;color:var(--muted);letter-spacing:0.15em;margin-top:6px" id="d-email">—</div>
+  </div>
+  <div class="dash-section">
+    <div class="section-title">// MODE ANGE — URGENCE</div>
+    <button class="ange-btn" onclick="ange()">⚠ TRIPLE-TAP D'URGENCE — ACTIVER MODE ANGE</button>
+    <div style="font-size:0.55rem;color:var(--muted);letter-spacing:0.1em;margin-top:8px;text-align:center">Appuie 3 fois pour envoyer ta position à ton contact de confiance</div>
+  </div>
+  <div class="dash-section">
+    <div class="section-title">// SALONS COMMUNAUTAIRES</div>
+    <div id="salons"><div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:20px">Chargement...</div></div>
+  </div>
+  <div class="dash-section">
+    <div class="section-title">// ACCÈS FONDATEUR</div>
+    <button class="btn-secondary" onclick="fondateur()" style="width:100%;margin-bottom:10px">DEVENIR FONDATEUR — 99$/AN ✦</button>
+    <div style="font-size:0.55rem;color:var(--muted);letter-spacing:0.1em;text-align:center">500 places · Accès à vie · Salon VIP exclusif</div>
+  </div>
+  <div style="margin-top:30px;padding-top:20px;border-top:1px solid var(--border)">
+    <button class="btn-secondary" onclick="deco()" style="width:100%;font-size:0.6rem">SE DÉCONNECTER</button>
+  </div>
+</div>
+
+<nav class="bottom-nav" id="bnav">
+  <div class="bnav">
+    <button class="bnav-item active"><span class="bnav-icon">✦</span><span class="bnav-label">Accueil</span></button>
+    <button class="bnav-item"><span class="bnav-icon">◈</span><span class="bnav-label">Salons</span></button>
+    <button class="bnav-item"><span class="bnav-icon">○</span><span class="bnav-label">Profil</span></button>
+  </div>
+</nav>
+
+<script>
+const SB = window.supabase.createClient(
+  'https://fhksytcoyjtcrkmhnoyw.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoa3N5dGNveWp0Y3JrbWhub3l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1OTkzODIsImV4cCI6MjA5MjE3NTM4Mn0.nW9xgEQSuXlq96d53AFE7jUADmr04YdMoD9hCNmw64k'
+);
+let user=null,ac=0,at=null;
+
+function tick(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')}
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const t=document.getElementById('page-'+p);if(t)t.classList.add('active');document.getElementById('bnav').classList[p==='dashboard'?'add':'remove']('show');document.getElementById('nav-btn').style.display=p==='dashboard'?'none':'';window.scrollTo(0,0)}
+function alr(id,t,m){const e=document.getElementById(id);if(e){e.textContent=m;e.className='alert '+t+' show'}}
+function clr(...ids){ids.forEach(id=>{const e=document.getElementById(id);if(e){e.textContent='';e.className='alert '+e.className.split(' ').find(c=>c==='error'||c==='success')||''}})}
+
+async function inscrire(){
+  const email=document.getElementById('i-email').value.trim(),pw=document.getElementById('i-pw').value,nom=document.getElementById('i-nom').value.trim(),ville=document.getElementById('i-ville').value,id=document.getElementById('i-id').value,terms=document.getElementById('i-terms').checked;
+  clr('ie','is');
+  if(!email||!pw||!nom||!ville||!id){alr('ie','error','⚠ Tous les champs sont requis.');return}
+  if(pw.length<8){alr('ie','error','⚠ Mot de passe trop court (8 caractères minimum).');return}
+  if(!terms){alr('ie','error','⚠ Accepte les conditions d\'utilisation.');return}
+  const btn=document.getElementById('i-btn');btn.innerHTML='<span class="spinner"></span> CRÉATION...';btn.disabled=true;
+  const{data,error}=await SB.auth.signUp({email,password:pw,options:{data:{prenom:nom,ville,identite:id}}});
+  if(error){alr('ie','error','⚠ '+(error.message.includes('already')?'Email déjà utilisé.':error.message));btn.innerHTML='CRÉER MON COMPTE VIBE ✦';btn.disabled=false;return}
+  if(data.session){user=data.user;dashboard()}
+  else{alr('is','success','✦ Compte créé ! Vérifie ton email pour confirmer.');btn.innerHTML='CRÉER MON COMPTE VIBE ✦';btn.disabled=false}
+}
+
+async function connecter(){
+  const email=document.getElementById('c-email').value.trim(),pw=document.getElementById('c-pw').value;
+  clr('ce','cs');
+  if(!email||!pw){alr('ce','error','⚠ Email et mot de passe requis.');return}
+  const btn=document.getElementById('c-btn');btn.innerHTML='<span class="spinner"></span> CONNEXION...';btn.disabled=true;
+  const{data,error}=await SB.auth.signInWithPassword({email,password:pw});
+  if(error){alr('ce','error','⚠ '+(error.message.includes('Invalid')?'Email ou mot de passe incorrect.':error.message));btn.innerHTML='SE CONNECTER';btn.disabled=false;return}
+  user=data.user;dashboard()
+}
+
+async function resetPw(){
+  const email=document.getElementById('c-email').value.trim();
+  if(!email){alr('ce','error','⚠ Entre ton email pour réinitialiser.');return}
+  const{error}=await SB.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
+  error?alr('ce','error','⚠ '+error.message):alr('cs','success','✦ Email de réinitialisation envoyé !')
+}
+
+async function deco(){await SB.auth.signOut();user=null;go('home')}
+
+function dashboard(){
+  document.getElementById('d-nom').textContent=user.user_metadata?.prenom||user.email.split('@')[0];
+  document.getElementById('d-email').textContent=user.email;
+  go('dashboard');chargerSalons()
+}
+
+async function chargerSalons(){
+  const{data,error}=await SB.from('salons').select('*').eq('is_active',true).order('city');
+  const el=document.getElementById('salons');
+  if(error||!data||!data.length){el.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:20px">Salons bientôt disponibles ✦</div>';return}
+  el.innerHTML=data.map(s=>`<div class="salon-item"><div><div class="salon-name">${s.name}</div><div class="salon-city">${s.city}</div></div><div class="salon-type">${s.type==='vip'?'★ VIP':s.type==='private'?'◈ PRIVÉ':'◇ PUBLIC'}</div></div>`).join('')
+}
+
+function ange(){
+  ac++;clearTimeout(at);at=setTimeout(()=>ac=0,2000);
+  if(ac>=3){ac=0;
+    if(navigator.geolocation){navigator.geolocation.getCurrentPosition(async p=>{
+      await SB.from('ange_alerts').insert({user_id:user.id,latitude:p.coords.latitude,longitude:p.coords.longitude,triggered_at:new Date().toISOString()});
+      alert('⚠ MODE ANGE ACTIVÉ\n\nTa position a été envoyée à ton contact de confiance. ✦')
+    },()=>alert('⚠ MODE ANGE ACTIVÉ\n\nActive le GPS dans tes paramètres.'))}
+    else alert('⚠ GPS non disponible.')
+  }
+}
+
+function fondateur(){alert('✦ ACCÈS FONDATEUR\n\nContacte-nous : vibeqbc2026@hotmail.com\n\n500 places · 99$/an · Accès à vie')}
+
+// Particules
+(function(){
+  const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#d4af37','#e91e8c','#00bcd4','#9b59b6','#2ecc71','#e74c3c'];
+  const ps=Array.from({length:35},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*2+0.5,c:cols[Math.floor(Math.random()*cols.length)],sx:(Math.random()-0.5)*0.3,sy:-Math.random()*0.5-0.2,o:Math.random()*0.4+0.1}));
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c+Math.round(p.o*255).toString(16).padStart(2,'0');ctx.fill();p.x+=p.sx;p.y+=p.sy;if(p.y<-10){p.y=cv.height+10;p.x=Math.random()*cv.width}});requestAnimationFrame(draw)}
+  draw();window.addEventListener('resize',()=>{cv.width=innerWidth;cv.height=innerHeight})
+})();
+
+// Init
+tick();setInterval(tick,1000);
+(async()=>{
+  const{data:{session}}=await SB.auth.getSession();
+  if(session){user=session.user;dashboard()}
+  SB.auth.onAuthStateChange((e,s)=>{if(e==='SIGNED_IN'&&s){user=s.user;dashboard()}else if(e==='SIGNED_OUT'){user=null;go('home')}});
+  setTimeout(()=>document.getElementById('loading').classList.add('hide'),1200)
+})();
+</script>
 </body>
 </html>
