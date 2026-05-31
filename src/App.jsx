@@ -1,3 +1,5 @@
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
 export default function App() {
   return (
     <div style={{
@@ -37,6 +39,7 @@ export default function App() {
       <p style={{fontSize:'0.8rem',opacity:0.5,marginTop:'60px'}}>
         © 2026 VIBE Canada · vibegay.ca
       </p>
+      <SpeedInsights />
     </div>
   );
 }
