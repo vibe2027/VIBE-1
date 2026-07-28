@@ -1,85 +1,119 @@
--- ════════════════════════════════════════════════════════════════
---  VIBE — Le Salon des Voix · Configuration Supabase
---  Projet : fhksytcoyjtcrkmhnoyw
---
---  COMMENT L'UTILISER :
---  1. Va sur supabase.com → ton projet → "SQL Editor"
---  2. Clique "New query"
---  3. Colle TOUT ce fichier
---  4. Clique "Run"
---  → Ça crée la table, les sécurités, et le bucket de stockage audio
--- ════════════════════════════════════════════════════════════════
+import { useState } from 'react'
 
--- ── 1. TABLE : les profils-voix ─────────────────────────────────
-create table if not exists public.voix_profiles (
-  id              uuid primary key default gen_random_uuid(),
-  user_id         uuid references auth.users(id) on delete cascade,
-  name            text,
-  city            text,
-  dist            text,
-  intent          text,
-  audio_url       text not null,
-  duration_label  text default '0:20',
-  tone_label      text default 'authentique',
-  photo_url       text,
-  published       boolean default true,
-  created_at      timestamptz default now()
-);
+export default function App() {
+  const [form, setForm] = useState({ prenom: '', email: '', ville: '' })
+  const [status, setStatus] = useState('')
 
--- Index pour charger les voix récentes rapidement
-create index if not exists voix_profiles_published_idx
-  on public.voix_profiles (published, created_at desc);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
--- ── 2. SÉCURITÉ (Row Level Security) ────────────────────────────
-alter table public.voix_profiles enable row level security;
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!form.prenom || !form.email || !form.ville) {
+      setStatus('Remplis tous les champs.')
+      return
+    }
+    // TODO: brancher Supabase Auth + Stripe Checkout ici
+    setStatus('Inscription reçue. Confirmation par courriel sous 24 h.')
+  }
 
--- Tout le monde peut VOIR les voix publiées
-drop policy if exists "voix_select_published" on public.voix_profiles;
-create policy "voix_select_published"
-  on public.voix_profiles for select
-  using ( published = true );
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: '#000',
+      color: 'rgba(255,255,255,0.75)',
+      fontFamily: "'Space Mono', monospace",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '40px 20px',
+      textAlign: 'center'
+    }}>
+      <h1 style={{
+        fontFamily: "'Playfair Display', Georgia, serif",
+        fontSize: 'clamp(3rem, 10vw, 5rem)',
+        color: '#D4AF37',
+        letterSpacing: '6px',
+        marginBottom: '8px'
+      }}>
+        VIBE
+      </h1>
+      <p style={{ fontSize: '0.7rem', letterSpacing: '4px', color: 'rgba(212,175,55,0.5)', textTransform: 'uppercase', marginBottom: '40px' }}>
+        Réseau LGBTQ+ Canadien · Québec 2026
+      </p>
 
--- Un membre connecté peut PUBLIER sa propre voix
-drop policy if exists "voix_insert_own" on public.voix_profiles;
-create policy "voix_insert_own"
-  on public.voix_profiles for insert
-  with check ( auth.uid() = user_id );
+      <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px', textAlign: 'left' }}>
+        <label style={styles.label}>Prénom</label>
+        <input name="prenom" value={form.prenom} onChange={handleChange} placeholder="Ton prénom" style={styles.input} />
 
--- Un membre peut MODIFIER seulement sa propre voix
-drop policy if exists "voix_update_own" on public.voix_profiles;
-create policy "voix_update_own"
-  on public.voix_profiles for update
-  using ( auth.uid() = user_id );
+        <label style={styles.label}>Courriel</label>
+        <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="ton@courriel.ca" style={styles.input} />
 
--- Un membre peut SUPPRIMER seulement sa propre voix
-drop policy if exists "voix_delete_own" on public.voix_profiles;
-create policy "voix_delete_own"
-  on public.voix_profiles for delete
-  using ( auth.uid() = user_id );
+        <label style={styles.label}>Ville</label>
+        <select name="ville" value={form.ville} onChange={handleChange} style={styles.input}>
+          <option value="">Sélectionner</option>
+          <option>Québec</option>
+          <option>Montréal</option>
+          <option>Toronto</option>
+          <option>Vancouver</option>
+          <option>Ottawa</option>
+          <option>Calgary</option>
+          <option>Autre</option>
+        </select>
 
--- ── 3. BUCKET DE STOCKAGE pour les fichiers audio ───────────────
-insert into storage.buckets (id, name, public)
-values ('voix', 'voix', true)
-on conflict (id) do nothing;
+        <button type="submit" style={styles.btn}>
+          Réserver ma place — 99 $
+        </button>
 
--- Tout le monde peut ÉCOUTER (lire) les fichiers audio
-drop policy if exists "voix_audio_read" on storage.objects;
-create policy "voix_audio_read"
-  on storage.objects for select
-  using ( bucket_id = 'voix' );
+        {status && (
+          <p style={{ marginTop: '16px', fontSize: '0.7rem', color: '#D4AF37', textAlign: 'center' }}>
+            {status}
+          </p>
+        )}
+      </form>
 
--- Un membre connecté peut TÉLÉVERSER son audio
-drop policy if exists "voix_audio_upload" on storage.objects;
-create policy "voix_audio_upload"
-  on storage.objects for insert
-  with check ( bucket_id = 'voix' and auth.role() = 'authenticated' );
+      <p style={{ marginTop: '48px', fontSize: '0.5rem', letterSpacing: '2px', color: 'rgba(255,255,255,0.15)' }}>
+        © 2026 VIBE · Québec, Canada · Conforme Loi 25
+      </p>
+    </div>
+  )
+}
 
--- ════════════════════════════════════════════════════════════════
---  FINI. Le Salon des Voix est prêt côté base de données.
---
---  Ensuite, dans ton App.jsx, décommente le bloc "👉 SUPABASE"
---  dans la fonction publishVoice() — il pointe déjà vers :
---    • le bucket   'voix'
---    • la table    'voix_profiles'
---  Les noms correspondent exactement à ce SQL.
--- ════════════════════════════════════════════════════════════════
+const styles = {
+  label: {
+    display: 'block',
+    fontSize: '0.55rem',
+    letterSpacing: '3px',
+    color: 'rgba(212,175,55,0.4)',
+    textTransform: 'uppercase',
+    marginBottom: '6px',
+    marginTop: '14px'
+  },
+  input: {
+    width: '100%',
+    background: 'rgba(255,255,255,0.03)',
+    border: '0.5px solid rgba(212,175,55,0.2)',
+    color: 'rgba(255,255,255,0.7)',
+    padding: '12px 14px',
+    fontSize: '0.75rem',
+    fontFamily: "'Space Mono', monospace",
+    outline: 'none',
+    boxSizing: 'border-box'
+  },
+  btn: {
+    width: '100%',
+    marginTop: '24px',
+    background: 'transparent',
+    color: '#D4AF37',
+    border: '1px solid rgba(212,175,55,0.6)',
+    padding: '16px',
+    fontSize: '0.75rem',
+    fontWeight: 700,
+    letterSpacing: '4px',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    fontFamily: "'Space Mono', monospace'
+  }
+}
