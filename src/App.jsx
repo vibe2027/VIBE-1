@@ -4,6 +4,7 @@ import { recordClick, MATCH_CHANNEL } from './lib/matchEngine'
 import MatchFlash from './components/MatchFlash'
 import SalonFlottant from './components/SalonFlottant'
 import SalonVoix from './components/SalonVoix'
+import Tribunal from './components/Tribunal'
 import './index.css'
 
 const MY_ID = 'me-' + (typeof crypto !== 'undefined' && crypto.randomUUID
@@ -11,21 +12,19 @@ const MY_ID = 'me-' + (typeof crypto !== 'undefined' && crypto.randomUUID
   : String(Date.now()).slice(-6))
 
 export default function App() {
-  const [view, setView] = useState('home') // home | flottant | voix | inscription
+  const [view, setView] = useState('home')
   const [flashKey, setFlashKey] = useState(0)
-  const [myMatch, setMyMatch] = useState(null) // { pair, at } — privé
+  const [myMatch, setMyMatch] = useState(null)
   const [revealed, setRevealed] = useState({})
   const [status, setStatus] = useState('')
   const [form, setForm] = useState({ prenom: '', email: '', ville: '' })
 
-  // Écoute des flashs globaux (Realtime si configuré, sinon local)
   useEffect(() => {
     if (!supabaseConfigured) return
     const channel = supabase.channel(MATCH_CHANNEL)
     channel
       .on('broadcast', { event: 'flash' }, (payload) => {
         setFlashKey((k) => k + 1)
-        // Si je fais partie du pair, j'enregistre le match privé
         const pair = payload?.payload?.pair
         if (pair && pair.includes(MY_ID)) {
           setMyMatch({ pair, at: payload.payload.at })
@@ -94,15 +93,16 @@ export default function App() {
       <nav style={{
         position: 'sticky', top: 0, zIndex: 100,
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '12px 20px', background: 'rgba(0,0,0,0.92)',
-        borderBottom: '0.5px solid rgba(212,175,55,0.2)',
+        padding: '12px 16px', background: 'rgba(0,0,0,0.92)',
+        borderBottom: '0.5px solid rgba(212,175,55,0.2)', gap: 8, flexWrap: 'wrap',
       }}>
         <button type="button" onClick={() => setView('home')} style={navBrand}>
           VIBE
         </button>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <NavBtn active={view === 'flottant'} onClick={() => setView('flottant')}>Salon Flottant</NavBtn>
           <NavBtn active={view === 'voix'} onClick={() => setView('voix')}>Salon Voix</NavBtn>
+          <NavBtn active={view === 'tribunal'} onClick={() => setView('tribunal')}>Tribunal</NavBtn>
           <NavBtn active={view === 'inscription'} onClick={() => setView('inscription')}>Rejoindre</NavBtn>
         </div>
       </nav>
@@ -119,17 +119,18 @@ export default function App() {
           <p style={{ fontSize: '0.65rem', letterSpacing: 5, color: 'rgba(212,175,55,0.45)', textTransform: 'uppercase' }}>
             Réseau LGBTQ+ Canadien · Québec 2026
           </p>
-          <p style={{ maxWidth: 420, margin: '28px auto', fontSize: '0.72rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.4)' }}>
-            Salon Flottant · Salon de la Voix · Mode Fantôme (fumée dense).
-            Match simultané : flash sur tous les écrans, secret pour les autres.
+          <p style={{ maxWidth: 440, margin: '28px auto', fontSize: '0.72rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.4)' }}>
+            Salon Flottant · Salon de la Voix · Mode Fantôme · Match flash ·
+            Tribunal (ailes / braise / pardon 25 $).
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 32 }}>
-            <button type="button" style={btnPrimary} onClick={() => setView('flottant')}>Entrer au Salon Flottant</button>
-            <button type="button" style={btnGhost} onClick={() => setView('voix')}>Salon de la Voix</button>
+            <button type="button" style={btnPrimary} onClick={() => setView('flottant')}>Salon Flottant</button>
+            <button type="button" style={btnGhost} onClick={() => setView('tribunal')}>Tribunal</button>
+            <button type="button" style={btnGhost} onClick={() => setView('voix')}>Salon Voix</button>
           </div>
           {!supabaseConfigured && (
-            <p style={{ marginTop: 40, fontSize: '0.55rem', color: 'rgba(255,100,100,0.6)', letterSpacing: 1 }}>
-              ⚠ Supabase non configuré — mode démo local (matchs locaux OK, pas de sync multi-appareils)
+            <p style={{ marginTop: 40, fontSize: '0.55rem', color: 'rgba(255,100,100,0.6)' }}>
+              ⚠ Supabase non configuré — mode démo local
             </p>
           )}
         </header>
@@ -146,6 +147,8 @@ export default function App() {
 
       {view === 'voix' && <SalonVoix />}
 
+      {view === 'tribunal' && <Tribunal onStatus={setStatus} />}
+
       {view === 'inscription' && (
         <section style={{ maxWidth: 400, margin: '40px auto', padding: '0 20px' }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", color: '#D4AF37', textAlign: 'center', marginBottom: 8 }}>Rejoindre VIBE</h2>
@@ -156,12 +159,7 @@ export default function App() {
             <Label>Courriel</Label>
             <Input name="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             <Label>Ville</Label>
-            <select
-              name="ville"
-              value={form.ville}
-              onChange={(e) => setForm({ ...form, ville: e.target.value })}
-              style={inputStyle}
-            >
+            <select name="ville" value={form.ville} onChange={(e) => setForm({ ...form, ville: e.target.value })} style={inputStyle}>
               <option value="">Sélectionner</option>
               {['Québec', 'Montréal', 'Toronto', 'Vancouver', 'Ottawa', 'Calgary', 'Autre'].map((v) => (
                 <option key={v} value={v}>{v}</option>
@@ -193,21 +191,15 @@ export default function App() {
 
 function NavBtn({ children, active, onClick }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        background: 'none', border: 'none', cursor: 'pointer',
-        fontSize: '0.52rem', letterSpacing: 2, textTransform: 'uppercase',
-        color: active ? '#D4AF37' : 'rgba(212,175,55,0.35)',
-        fontFamily: 'inherit',
-      }}
-    >
+    <button type="button" onClick={onClick} style={{
+      background: 'none', border: 'none', cursor: 'pointer',
+      fontSize: '0.5rem', letterSpacing: 1.5, textTransform: 'uppercase',
+      color: active ? '#D4AF37' : 'rgba(212,175,55,0.35)', fontFamily: 'inherit',
+    }}>
       {children}
     </button>
   )
 }
-
 function Label({ children }) {
   return <label style={{ display: 'block', fontSize: '0.5rem', letterSpacing: 3, color: 'rgba(212,175,55,0.4)', textTransform: 'uppercase', margin: '14px 0 6px' }}>{children}</label>
 }
