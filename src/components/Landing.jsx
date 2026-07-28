@@ -2,7 +2,7 @@ import { PRICING, EXTRAS, openCheckout } from '../lib/pricing'
 
 /** Design marketing d’origine VIBE — Playfair + Space Mono + or #D4AF37 */
 export default function Landing({ onEnter, onLogin }) {
-  const founder = PRICING.founder
+  const pioneer = PRICING.pioneer
   const regular = [PRICING.week, PRICING.month, PRICING.year]
 
   return (
@@ -13,7 +13,7 @@ export default function Landing({ onEnter, onLogin }) {
         <div className="hud-brand">VIBE</div>
         <div className="hud-mid">
           <a href="#accueil">Accueil</a>
-          <a href="#fondateur">Fondateur</a>
+          <a href="#pionnier">Pionnier</a>
           <a href="#tarifs">Tarifs</a>
           <a href="#extras">Extras</a>
           <a href="#ange">Mode Ange</a>
@@ -46,29 +46,29 @@ export default function Landing({ onEnter, onLogin }) {
         </p>
         <div className="hero-btns">
           <button type="button" className="btn-primary" onClick={onEnter}><span>Entrer</span></button>
-          <a href="#fondateur" className="btn-ghost">Devenir Fondateur</a>
+          <a href="#pionnier" className="btn-ghost">Devenir Pionnier</a>
         </div>
       </section>
 
       <div className="stats-strip">
-        <div className="stat-cell"><span className="stat-n">500</span><span className="stat-l">Places Fondateur</span></div>
-        <div className="stat-cell"><span className="stat-n">99$</span><span className="stat-l">1 versement / an</span></div>
+        <div className="stat-cell"><span className="stat-n">500</span><span className="stat-l">Places Pionnier</span></div>
+        <div className="stat-cell"><span className="stat-n">99$</span><span className="stat-l">1 versement</span></div>
         <div className="stat-cell"><span className="stat-n">5</span><span className="stat-l">Villes Actives</span></div>
         <div className="stat-cell"><span className="stat-n">0</span><span className="stat-l">Données vendues</span></div>
       </div>
 
       <div className="ticker">
         <span className="ticker-inner">
-          VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;
-          VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;
+          VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 PIONNIERS · 99$ UNIQUE ·&nbsp;
+          VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 PIONNIERS · 99$ UNIQUE ·&nbsp;
         </span>
       </div>
 
-      <section id="fondateur" className="section">
+      <section id="pionnier" className="section">
         <p className="section-label">// Édition limitée</p>
-        <h2 className="form-title" style={{ textAlign: 'center', marginBottom: 8 }}>Pass Fondateur</h2>
+        <h2 className="form-title" style={{ textAlign: 'center', marginBottom: 8 }}>Pass Pionnier</h2>
         <p className="form-sub" style={{ textAlign: 'center', marginBottom: 28 }}>
-          500 billets · 99 $ · un seul versement · ensuite tarifs réguliers seulement
+          500 billets · 99 $ · un seul versement · pas de mois ni d’abonnement
         </p>
         <div className="founder-block">
           <div className="price-name">Accès 12 mois</div>
@@ -76,14 +76,15 @@ export default function Landing({ onEnter, onLogin }) {
             99 $ <span>CAD · 1 versement</span>
           </div>
           <div className="price-desc" style={{ maxWidth: 400, margin: '12px auto 20px' }}>
-            <strong style={{ color: 'rgba(212,175,55,0.85)' }}>Pas de mensualités.</strong>{' '}
-            Tu paies une fois → actif 1 an. Après 500 places : impossible de revenir à ce prix.
+            <strong style={{ color: 'rgba(212,175,55,0.85)' }}>Un seul paiement.</strong>{' '}
+            Pas de mensualité, pas de forfait « par mois / an » sur ce pass.
+            Tu paies 99 $ une fois → actif 1 an. Après 500 places : ce prix ne revient jamais.
           </div>
           <div className="progress-wrap">
             <div className="progress-bar"><div className="progress-fill" /></div>
             <div className="progress-label"><span>~4 / 500</span><span>~496 restantes</span></div>
           </div>
-          <button type="button" className="btn-primary full" onClick={() => openCheckout(founder.url)}>
+          <button type="button" className="btn-primary full" onClick={() => openCheckout(pioneer.url)}>
             <span>Réserver — 99 $ (1 versement)</span>
           </button>
         </div>

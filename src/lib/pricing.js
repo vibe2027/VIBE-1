@@ -1,23 +1,26 @@
 /**
  * Tarifs VIBE CAD
- * - 500 Pass Fondateur : 99 $ EN UN SEUL VERSEMENT (paiement unique, 1 an)
- * - Après épuisement : tarifs réguliers uniquement — le prix fondateur ne revient JAMAIS
+ * - 500 Pass Pionnier : 99 $ EN UN SEUL VERSEMENT (pas de mois/ans sur ce pass)
+ * - Après épuisement : tarifs réguliers uniquement — le prix pionnier ne revient JAMAIS
  */
 
-export const FOUNDER_LIMIT = 500
+export const PIONEER_LIMIT = 500
+export const FOUNDER_LIMIT = PIONEER_LIMIT // alias rétro
 
 export const PRICING = {
-  founder: {
-    id: 'founder_onetime',
-    name: 'Pass Fondateur',
+  pioneer: {
+    id: 'pioneer_onetime',
+    name: 'Pass Pionnier',
     price: 99,
     unit: 'CAD · 1 versement',
-    limit: FOUNDER_LIMIT,
+    limit: PIONEER_LIMIT,
     oneTime: true,
-    desc: '500 places max. Un paiement unique active 1 an. Tarif jamais réouvert après épuisement.',
-    url: 'https://buy.stripe.com/28E14pgjE0nR5KM7HN9R608',
-    priceId: 'price_1TyGRPPrPYFQYWVuKoKHlbEk',
+    desc: '500 places max. Un seul paiement active 1 an. Pas de mensualité. Tarif jamais réouvert après épuisement.',
+    url: 'https://buy.stripe.com/5kQ6oJ8Rc1rVb563rx9R609',
+    priceId: 'price_1TyHuCPrPYFQYWVuClW6nkn5',
   },
+  // alias pour le code existant
+  founder: undefined,
   week: {
     id: 'sub_week',
     name: 'Hebdomadaire',
@@ -41,33 +44,36 @@ export const PRICING = {
     name: 'Annuel',
     price: 99,
     unit: '/ an',
-    desc: 'Accès 12 mois · Tarif régulier (après les 500 fondateurs)',
+    desc: 'Accès 12 mois · Tarif régulier (après les 500 pionniers)',
     url: 'https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602',
     priceId: 'price_1TyGLmPrPYFQYWVuV3GcusXA',
   },
 }
 
+// Alias pour compatibilité Landing qui utilisait PRICING.founder
+PRICING.founder = PRICING.pioneer
+
 export const EXTRAS = [
   {
-    id: 'boost_24h',
-    name: 'Boost Découverte 24h',
-    price: 4.99,
-    desc: 'En tête de la découverte pendant 24 h',
-    url: 'https://buy.stripe.com/eVqeVf3wSc6zflm1jp9R604',
+    id: 'boost_7d',
+    name: 'Boost Découverte 7 jours',
+    price: 7.99,
+    desc: 'En tête de la découverte pendant 7 jours',
+    url: 'https://buy.stripe.com/fZu28t9Vg1rV1uwd279R60a',
   },
   {
     id: 'ghost_7d',
     name: 'Mode Fantôme 7 jours',
-    price: 7.99,
-    desc: 'Invisible dans Découverte pendant 7 jours',
-    url: 'https://buy.stripe.com/7sY28t7N8b2v4GI7HN9R605',
+    price: 9.99,
+    desc: 'Profil en fumée dense pendant 7 jours',
+    url: 'https://buy.stripe.com/fZu3cx4AW6Mfb565zF9R60b',
   },
   {
     id: 'visitors_7d',
     name: 'Qui m’a visité — 7 jours',
-    price: 5.99,
+    price: 6.99,
     desc: 'Voir la liste des visiteurs pendant 7 jours',
-    url: 'https://buy.stripe.com/7sY5kFgjE8Un4GId279R606',
+    url: 'https://buy.stripe.com/eVq9AVgjE8Un0qs6DJ9R60c',
   },
   {
     id: 'pardon_25',
