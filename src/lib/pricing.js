@@ -1,22 +1,38 @@
-/** Tarifs VIBE CAD — liés aux Payment Links Stripe (livemode) */
+/**
+ * Tarifs VIBE CAD
+ * - 500 Pass Fondateur : 99 $ EN UN SEUL VERSEMENT (paiement unique, 1 an)
+ * - Après épuisement : tarifs réguliers uniquement — le prix fondateur ne revient JAMAIS
+ */
+
+export const FOUNDER_LIMIT = 500
 
 export const PRICING = {
   founder: {
-    id: 'founder_year',
+    id: 'founder_onetime',
     name: 'Pass Fondateur',
     price: 99,
-    unit: '/ an',
-    limit: 500,
-    desc: '500 places · Accès complet 1 an · Édition limitée',
-    url: 'https://buy.stripe.com/8x26oJffA4E78WY8LR9R600',
-    priceId: 'price_1TyGLjPrPYFQYWVu26KfMtjQ',
+    unit: 'CAD · 1 versement',
+    limit: FOUNDER_LIMIT,
+    oneTime: true,
+    desc: '500 places max. Un paiement unique active 1 an. Tarif jamais réouvert après épuisement.',
+    url: 'https://buy.stripe.com/28E14pgjE0nR5KM7HN9R608',
+    priceId: 'price_1TyGRPPrPYFQYWVuKoKHlbEk',
+  },
+  week: {
+    id: 'sub_week',
+    name: 'Hebdomadaire',
+    price: 4.99,
+    unit: '/ semaine',
+    desc: 'Accès complet · Tarif régulier',
+    url: 'https://buy.stripe.com/fZu28t0kG8Un7SU8LR9R603',
+    priceId: 'price_1TyGLoPrPYFQYWVuVAQzjUsk',
   },
   month: {
     id: 'sub_month',
     name: 'Mensuel',
     price: 12.99,
     unit: '/ mois',
-    desc: 'Accès complet · Sans engagement long',
+    desc: 'Accès complet · Tarif régulier',
     url: 'https://buy.stripe.com/fZubJ3ebw1rV5KM5zF9R601',
     priceId: 'price_1TyGLlPrPYFQYWVuO0kQXn2J',
   },
@@ -25,18 +41,9 @@ export const PRICING = {
     name: 'Annuel',
     price: 99,
     unit: '/ an',
-    desc: 'Accès complet 12 mois',
+    desc: 'Accès 12 mois · Tarif régulier (après les 500 fondateurs)',
     url: 'https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602',
     priceId: 'price_1TyGLmPrPYFQYWVuV3GcusXA',
-  },
-  week: {
-    id: 'sub_week',
-    name: 'Hebdomadaire',
-    price: 4.99,
-    unit: '/ semaine',
-    desc: 'Accès 7 jours renouvelable',
-    url: 'https://buy.stripe.com/fZu28t0kG8Un7SU8LR9R603',
-    priceId: 'price_1TyGLoPrPYFQYWVuVAQzjUsk',
   },
 }
 

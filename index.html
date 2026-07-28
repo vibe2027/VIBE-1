@@ -1,15 +1,605 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="VIBE — Réseau LGBTQ+ Canadien. Salons, Mode Fantôme, matchs sécurisés." />
-    <title>VIBE — Réseau LGBTQ+ Canadien</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VIBE — Réseau LGBTQ+ Canadien. 500 Pass Fondateur à 99 $ (paiement unique). Né à Québec.">
+<title>VIBE — Réseau LGBTQ+ Canadien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #D4AF37;
+  --gold-dim: rgba(212,175,55,0.15);
+  --purple: #b44fff;
+  --cyan: #00eeff;
+  --bg: #050505;
+  --text: rgba(255,255,255,0.78);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+#universe {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* HUD */
+.hud {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 28px;
+  background: rgba(5,5,5,0.88);
+  border-bottom: 0.5px solid rgba(212,175,55,0.18);
+  backdrop-filter: blur(16px);
+}
+.hud-brand {
+  font-size: 0.8rem; letter-spacing: 8px; color: var(--gold); font-weight: 700;
+}
+.hud-mid { display: flex; gap: 28px; }
+.hud-mid a {
+  font-size: 0.52rem; letter-spacing: 3px; color: rgba(212,175,55,0.38);
+  text-decoration: none; text-transform: uppercase; transition: color 0.3s;
+}
+.hud-mid a:hover { color: var(--gold); }
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 12px rgba(212,175,55,0.6);
+  animation: blink 1.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* HERO */
+.hero {
+  position: relative; z-index: 10;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+}
+.orb-wrap {
+  position: relative; width: 200px; height: 200px; margin: 0 auto 40px;
+}
+.orb {
+  position: absolute; border-radius: 50%; border: 0.5px solid;
+}
+.orb-a {
+  inset: -16px; border-color: rgba(212,175,55,0.28);
+  animation: spin 14s linear infinite;
+}
+.orb-b {
+  inset: -32px; border-color: rgba(180,79,255,0.14);
+  animation: spin 22s linear infinite reverse;
+}
+.orb-c {
+  inset: -48px; border-color: rgba(0,238,255,0.08);
+  animation: spin 30s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.orb-core {
+  width: 160px; height: 160px; margin: 20px auto 0;
+  border-radius: 50%;
+  border: 1px solid rgba(212,175,55,0.35);
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse at 40% 30%, rgba(212,175,55,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 60% 70%, rgba(180,79,255,0.06) 0%, transparent 50%);
+  box-shadow: 0 0 60px rgba(212,175,55,0.08);
+}
+.orb-core span {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem; font-weight: 700; color: var(--gold); letter-spacing: 6px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4.2rem, 14vw, 8rem);
+  font-weight: 700; line-height: 0.95; margin-bottom: 12px;
+}
+.hero h1 .v { color: var(--gold); }
+.hero h1 .ibe {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(212,175,55,0.45);
+}
+.hero-sub {
+  font-size: 0.68rem; letter-spacing: 7px; color: rgba(212,175,55,0.5);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.hero-origin {
+  font-size: 0.55rem; letter-spacing: 4px; color: rgba(255,255,255,0.18);
+  text-transform: uppercase; margin-bottom: 32px;
+}
+.pride {
+  display: flex; height: 3px; width: 260px; margin: 0 auto 36px;
+  border-radius: 2px; overflow: hidden;
+}
+.pride span {
+  flex: 1;
+  animation: bar 2.8s ease-in-out infinite;
+}
+.pride span:nth-child(1){background:#E40303;animation-delay:0s}
+.pride span:nth-child(2){background:#FF8C00;animation-delay:.08s}
+.pride span:nth-child(3){background:#FFED00;animation-delay:.16s}
+.pride span:nth-child(4){background:#008026;animation-delay:.24s}
+.pride span:nth-child(5){background:#004DFF;animation-delay:.32s}
+.pride span:nth-child(6){background:#750787;animation-delay:.4s}
+.pride span:nth-child(7){background:#FFAFC8;animation-delay:.48s}
+.pride span:nth-child(8){background:#74D7EE;animation-delay:.56s}
+@keyframes bar {
+  0%,100%{ opacity:.35; transform: scaleY(1); }
+  50%{ opacity:1; transform: scaleY(2.2); }
+}
+.hero-lead {
+  max-width: 420px; margin: 0 auto 36px;
+  font-size: 0.72rem; line-height: 1.95; color: rgba(255,255,255,0.38);
+}
+.hero-btns {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 16px 36px; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase; text-decoration: none;
+  font-family: inherit; cursor: pointer; border: none; transition: all 0.35s;
+  position: relative; overflow: hidden;
+}
+.btn-gold {
+  background: transparent; color: var(--gold);
+  border: 1px solid rgba(212,175,55,0.65);
+}
+.btn-gold::before {
+  content: ''; position: absolute; inset: 0; left: -100%;
+  background: var(--gold); transition: left 0.4s cubic-bezier(.4,0,.2,1); z-index: 0;
+}
+.btn-gold:hover::before { left: 0; }
+.btn-gold:hover { color: #000; }
+.btn-gold span { position: relative; z-index: 1; }
+.btn-ghost {
+  background: transparent; color: rgba(212,175,55,0.45);
+  border: 0.5px solid rgba(212,175,55,0.22);
+}
+.btn-ghost:hover { color: var(--gold); border-color: rgba(212,175,55,0.5); }
+
+/* STATS */
+.stats {
+  position: relative; z-index: 10;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 0.5px solid rgba(212,175,55,0.12);
+  border-bottom: 0.5px solid rgba(212,175,55,0.12);
+}
+.stat {
+  padding: 32px 16px; text-align: center;
+  border-right: 0.5px solid rgba(212,175,55,0.08);
+}
+.stat:last-child { border-right: none; }
+.stat strong {
+  display: block; font-size: 1.9rem; color: var(--gold);
+  font-weight: 700; letter-spacing: 2px; margin-bottom: 6px;
+}
+.stat span {
+  font-size: 0.48rem; letter-spacing: 3px; color: rgba(255,255,255,0.22);
+  text-transform: uppercase;
+}
+
+/* TICKER */
+.ticker {
+  position: relative; z-index: 10;
+  overflow: hidden; white-space: nowrap; padding: 11px 0;
+  border-bottom: 0.5px solid rgba(212,175,55,0.07);
+  background: rgba(212,175,55,0.015);
+}
+.ticker-inner {
+  display: inline-block; animation: tick 45s linear infinite;
+  font-size: 0.48rem; letter-spacing: 5px; color: rgba(212,175,55,0.22);
+}
+@keyframes tick { to { transform: translateX(-50%); } }
+
+/* SECTIONS */
+.section {
+  position: relative; z-index: 10; padding: 88px 24px;
+  max-width: 1100px; margin: 0 auto;
+}
+.section-label {
+  font-size: 0.52rem; letter-spacing: 7px; color: rgba(212,175,55,0.35);
+  text-transform: uppercase; text-align: center; margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--gold); text-align: center; margin-bottom: 12px; font-weight: 700;
+}
+.section-lead {
+  text-align: center; font-size: 0.7rem; line-height: 1.9;
+  color: rgba(255,255,255,0.35); max-width: 520px; margin: 0 auto 48px;
+}
+
+/* FONDATEUR SCARCITY */
+.founder-block {
+  max-width: 640px; margin: 0 auto 64px;
+  border: 1px solid rgba(212,175,55,0.4);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,0.1) 0%, transparent 60%),
+    rgba(212,175,55,0.03);
+  padding: 40px 32px; text-align: center; position: relative;
+}
+.founder-block::before {
+  content: 'ÉDITION LIMITÉE';
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--bg); padding: 0 14px;
+  font-size: 0.48rem; letter-spacing: 4px; color: var(--gold);
+}
+.founder-price {
+  font-size: 3.2rem; color: #fff; font-weight: 700; letter-spacing: 2px;
+  margin: 12px 0 4px;
+}
+.founder-price small {
+  font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 400;
+}
+.founder-note {
+  font-size: 0.62rem; line-height: 1.85; color: rgba(255,255,255,0.4);
+  margin: 16px auto 28px; max-width: 420px;
+}
+.founder-note strong { color: rgba(212,175,55,0.85); }
+.progress-wrap {
+  max-width: 360px; margin: 0 auto 20px;
+}
+.progress-bar {
+  height: 3px; background: rgba(212,175,55,0.12); border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0.8%; background: linear-gradient(90deg, var(--gold), #f0d78c);
+  box-shadow: 0 0 12px rgba(212,175,55,0.5);
+}
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.48rem; letter-spacing: 2px; color: rgba(255,255,255,0.25);
+  margin-top: 8px; text-transform: uppercase;
+}
+
+/* PRICE GRID */
+.price-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 20px;
+}
+.price-card {
+  border: 0.5px solid rgba(212,175,55,0.18);
+  background: rgba(255,255,255,0.02);
+  padding: 28px 22px; transition: border-color 0.3s, background 0.3s;
+}
+.price-card:hover {
+  border-color: rgba(212,175,55,0.4);
+  background: rgba(212,175,55,0.04);
+}
+.price-card h3 {
+  font-size: 0.65rem; letter-spacing: 3px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 14px; font-weight: 700;
+}
+.price-card .amt {
+  font-size: 2rem; color: #fff; font-weight: 700; margin-bottom: 8px;
+}
+.price-card .amt span {
+  font-size: 0.55rem; color: rgba(255,255,255,0.35); font-weight: 400;
+}
+.price-card p {
+  font-size: 0.6rem; color: rgba(255,255,255,0.32); line-height: 1.7; margin-bottom: 20px;
+}
+.price-card .btn { width: 100%; padding: 12px; font-size: 0.58rem; }
+.after-note {
+  text-align: center; font-size: 0.55rem; letter-spacing: 1px;
+  color: rgba(255,255,255,0.22); max-width: 480px; margin: 24px auto 0; line-height: 1.8;
+}
+
+/* EXTRAS */
+.extras-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.extra {
+  border: 0.5px solid rgba(212,175,55,0.12);
+  padding: 22px 18px; background: rgba(0,0,0,0.4);
+}
+.extra h4 {
+  font-size: 0.62rem; letter-spacing: 2px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.extra .amt { font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
+.extra p { font-size: 0.58rem; color: rgba(255,255,255,0.3); line-height: 1.7; margin-bottom: 14px; }
+.extra .btn { width: 100%; padding: 10px; font-size: 0.55rem; }
+
+/* ANGE */
+.ange-box {
+  border: 0.5px solid rgba(255,80,80,0.22);
+  background: rgba(255,80,80,0.025);
+  padding: 24px; max-width: 560px; margin: 0 auto 36px;
+}
+.ange-box .tag {
+  font-size: 0.5rem; letter-spacing: 4px; color: rgba(255,100,100,0.65);
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.ange-box p {
+  font-size: 0.7rem; color: rgba(255,255,255,0.35); line-height: 2;
+}
+.ange-box strong { color: rgba(255,120,120,0.9); }
+.feature-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px; background: rgba(212,175,55,0.07);
+}
+.feature {
+  background: var(--bg); padding: 28px 22px;
+}
+.feature .ico { font-size: 1.3rem; margin-bottom: 12px; display: block; }
+.feature h4 {
+  font-size: 0.65rem; letter-spacing: 3px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.feature p { font-size: 0.62rem; color: rgba(255,255,255,0.28); line-height: 1.85; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 10;
+  border-top: 0.5px solid rgba(212,175,55,0.1);
+  padding: 36px 24px; text-align: center;
+}
+footer .brand {
+  font-size: 0.7rem; letter-spacing: 7px; color: rgba(212,175,55,0.3);
+  font-weight: 700; margin-bottom: 12px;
+}
+footer .copy {
+  font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,0.12);
+  text-transform: uppercase;
+}
+
+/* PREVIEW BANNER */
+.preview-banner {
+  position: relative; z-index: 50;
+  background: rgba(212,175,55,0.08);
+  border-bottom: 0.5px solid rgba(212,175,55,0.25);
+  padding: 10px 16px; text-align: center;
+  font-size: 0.55rem; letter-spacing: 2px; color: rgba(212,175,55,0.7);
+}
+
+@media (max-width: 700px) {
+  .hud-mid { display: none; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat { border-bottom: 0.5px solid rgba(212,175,55,0.08); }
+  .founder-block { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="universe"></canvas>
+<div class="grain"></div>
+
+<div class="preview-banner">
+  APERÇU DESIGN · Pass Fondateur = 99 $ en 1 seul versement · Max 500 · Ensuite tarifs réguliers seulement
+</div>
+
+<nav class="hud">
+  <div class="hud-brand">VIBE</div>
+  <div class="hud-mid">
+    <a href="#accueil">Accueil</a>
+    <a href="#fondateur">Fondateur</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#extras">Extras</a>
+    <a href="#ange">Mode Ange</a>
+  </div>
+  <div class="pulse-dot"></div>
+</nav>
+
+<section class="hero" id="accueil">
+  <div class="orb-wrap">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="orb-core"><span>V</span></div>
+  </div>
+  <h1><span class="v">V</span><span class="ibe">IBE</span></h1>
+  <p class="hero-sub">Réseau LGBTQ+ Canadien</p>
+  <p class="hero-origin">Né à Québec · 2026</p>
+  <div class="pride">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <p class="hero-lead">
+    Salons immersifs. Mode Fantôme. Matchs secrets.
+    Tribunal communautaire. Sécurité Mode Ange.
+    Une communauté qui se protège elle-même.
+  </p>
+  <div class="hero-btns">
+    <a class="btn btn-gold" href="#fondateur"><span>Devenir Fondateur</span></a>
+    <a class="btn btn-ghost" href="#tarifs">Voir les tarifs</a>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><strong>500</strong><span>Places Fondateur</span></div>
+  <div class="stat"><strong>99$</strong><span>Paiement unique / an</span></div>
+  <div class="stat"><strong>5</strong><span>Villes actives</span></div>
+  <div class="stat"><strong>0</strong><span>Données vendues</span></div>
+</div>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;
+    VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · SALON FLOTTANT · TRIBUNAL · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;
+  </span>
+</div>
+
+<!-- FONDATEUR -->
+<section class="section" id="fondateur">
+  <p class="section-label">// Édition limitée</p>
+  <h2 class="section-title">Pass Fondateur</h2>
+  <p class="section-lead">
+    Seulement 500 billets à ce prix. Un seul versement active ton année.
+    Une fois les 500 vendus, ce tarif disparaît pour de bon.
+  </p>
+
+  <div class="founder-block">
+    <div style="font-size:0.55rem;letter-spacing:4px;color:rgba(212,175,55,0.5);text-transform:uppercase;">Accès 12 mois</div>
+    <div class="founder-price">99 $ <small>CAD · 1 versement</small></div>
+    <p class="founder-note">
+      <strong>Pas de mensualités.</strong> Tu paies 99 $ une fois → ton accès Fondateur est actif pour 1 an.
+      Après les 500 places : uniquement les tarifs réguliers (semaine / mois / an).
+      <strong>Impossible de revenir au prix Fondateur.</strong>
+    </p>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="progress-label"><span>~4 / 500 réservés</span><span>Reste ~496</span></div>
+    </div>
+    <!-- Aperçu design : bouton visible, Stripe prêt mais tu valides avant ouverture large -->
+    <a class="btn btn-gold" href="https://buy.stripe.com/28E14pgjE0nR5KM7HN9R608" target="_blank" rel="noopener" style="margin-top:8px;">
+      <span>Réserver — 99 $ (1 versement)</span>
+    </a>
+  </div>
+</section>
+
+<!-- TARIFS RÉGULIERS -->
+<section class="section" id="tarifs" style="padding-top:0;">
+  <p class="section-label">// Après les 500</p>
+  <h2 class="section-title">Tarifs réguliers</h2>
+  <p class="section-lead">
+    Quand les places Fondateur sont épuisées, seuls ces tarifs restent disponibles.
+  </p>
+  <div class="price-grid">
+    <div class="price-card">
+      <h3>Hebdomadaire</h3>
+      <div class="amt">4,99 $ <span>/ semaine</span></div>
+      <p>Accès complet · Renouvelable chaque 7 jours</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/fZu28t0kG8Un7SU8LR9R603" target="_blank" rel="noopener">Choisir</a>
+    </div>
+    <div class="price-card">
+      <h3>Mensuel</h3>
+      <div class="amt">12,99 $ <span>/ mois</span></div>
+      <p>Accès complet · Sans long engagement</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/fZubJ3ebw1rV5KM5zF9R601" target="_blank" rel="noopener">Choisir</a>
+    </div>
+    <div class="price-card">
+      <h3>Annuel</h3>
+      <div class="amt">99 $ <span>/ an</span></div>
+      <p>Accès complet 12 mois · Tarif régulier (après fondateurs)</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602" target="_blank" rel="noopener">Choisir</a>
+    </div>
+  </div>
+  <p class="after-note">
+    Le Pass Fondateur à 99 $ en un versement n’est jamais réouvert une fois les 500 billets vendus.
+  </p>
+</section>
+
+<!-- EXTRAS -->
+<section class="section" id="extras">
+  <p class="section-label">// Achat unique</p>
+  <h2 class="section-title">Extras</h2>
+  <p class="section-lead">Boosts et options à la carte — indépendants de l’abonnement.</p>
+  <div class="extras-grid">
+    <div class="extra">
+      <h4>Boost Découverte 24h</h4>
+      <div class="amt">4,99 $</div>
+      <p>En tête de la découverte pendant 24 heures.</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/eVqeVf3wSc6zflm1jp9R604" target="_blank" rel="noopener">Acheter</a>
+    </div>
+    <div class="extra">
+      <h4>Mode Fantôme 7 jours</h4>
+      <div class="amt">7,99 $</div>
+      <p>Invisible dans Découverte pendant 7 jours.</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/7sY28t7N8b2v4GI7HN9R605" target="_blank" rel="noopener">Acheter</a>
+    </div>
+    <div class="extra">
+      <h4>Qui m’a visité</h4>
+      <div class="amt">5,99 $</div>
+      <p>Liste des visiteurs pendant 7 jours.</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/7sY5kFgjE8Un4GId279R606" target="_blank" rel="noopener">Acheter</a>
+    </div>
+    <div class="extra">
+      <h4>Pardon Tribunal</h4>
+      <div class="amt">25 $</div>
+      <p>Pardon après verdict coupable (braise).</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/dRmcN79VgeeHc9aaTZ9R607" target="_blank" rel="noopener">Acheter</a>
+    </div>
+  </div>
+</section>
+
+<!-- ANGE -->
+<section class="section" id="ange">
+  <p class="section-label">// Protection</p>
+  <h2 class="section-title">Mode Ange Gardien</h2>
+  <p class="section-lead">Triple-tap. Ta sécurité en trois secondes.</p>
+  <div class="ange-box">
+    <div class="tag">⚠ Protocole d’urgence</div>
+    <p>
+      <strong>3 taps rapides</strong> sur l’écran activent le Mode Ange.<br>
+      Ton <strong>GPS</strong> et un <strong>enregistrement audio</strong> partent vers ton contact de confiance.<br>
+      Silencieux. Invisible. Toujours actif en arrière-plan.
+    </p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature">
+      <span class="ico">📍</span>
+      <h4>GPS Instantané</h4>
+      <p>Position exacte transmise en temps réel.</p>
+    </div>
+    <div class="feature">
+      <span class="ico">🎙</span>
+      <h4>Audio 30 s</h4>
+      <p>Enregistrement ambiant automatique.</p>
+    </div>
+    <div class="feature">
+      <span class="ico">👻</span>
+      <h4>Fumée dense</h4>
+      <p>Profil fantôme — tu te dévoiles si tu veux.</p>
+    </div>
+    <div class="feature">
+      <span class="ico">🛡</span>
+      <h4>Tribunal</h4>
+      <p>Ailes si non coupable · Braise si coupable.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">VIBE 2026</div>
+  <div class="copy">© 2026 VIBE · Québec, Canada · Conforme Loi 25 · Paiement Stripe sécurisé</div>
+</footer>
+
+<script>
+(function () {
+  const canvas = document.getElementById('universe');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = Array.from({ length: 200 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3,
+      a: Math.random() * Math.PI * 2,
+      speed: 0.00025 + Math.random() * 0.0006,
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      s.a += s.speed;
+      const o = 0.08 + Math.abs(Math.sin(s.a)) * 0.55;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(212,175,55,' + o + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+</body>
 </html>
