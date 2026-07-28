@@ -1,11 +1,11 @@
 /**
  * Tarifs VIBE CAD
- * - 500 Pass Pionnier : 99 $ EN UN SEUL VERSEMENT (pas de mois/ans sur ce pass)
- * - Après épuisement : tarifs réguliers uniquement — le prix pionnier ne revient JAMAIS
+ * - 500 Pass Pionnier : 99 $ EN UN SEUL VERSEMENT
+ * - Après : tarifs réguliers (semaine / mois 37,25 $ / an 149 $)
  */
 
 export const PIONEER_LIMIT = 500
-export const FOUNDER_LIMIT = PIONEER_LIMIT // alias rétro
+export const FOUNDER_LIMIT = PIONEER_LIMIT
 
 export const PRICING = {
   pioneer: {
@@ -19,8 +19,6 @@ export const PRICING = {
     url: 'https://buy.stripe.com/5kQ6oJ8Rc1rVb563rx9R609',
     priceId: 'price_1TyHuCPrPYFQYWVuClW6nkn5',
   },
-  // alias pour le code existant
-  founder: undefined,
   week: {
     id: 'sub_week',
     name: 'Hebdomadaire',
@@ -33,24 +31,23 @@ export const PRICING = {
   month: {
     id: 'sub_month',
     name: 'Mensuel',
-    price: 12.99,
+    price: 37.25,
     unit: '/ mois',
     desc: 'Accès complet · Tarif régulier',
-    url: 'https://buy.stripe.com/fZubJ3ebw1rV5KM5zF9R601',
-    priceId: 'price_1TyGLlPrPYFQYWVuO0kQXn2J',
+    url: 'https://buy.stripe.com/3cIdRbd7sfiL3CEd279R60d',
+    priceId: 'price_1TyK0cPrPYFQYWVuG0ucG5ON',
   },
   year: {
     id: 'sub_year',
     name: 'Annuel',
-    price: 99,
+    price: 149,
     unit: '/ an',
     desc: 'Accès 12 mois · Tarif régulier (après les 500 pionniers)',
-    url: 'https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602',
-    priceId: 'price_1TyGLmPrPYFQYWVuV3GcusXA',
+    url: 'https://buy.stripe.com/aFaaEZ9Vg5Ibflmfaf9R60e',
+    priceId: 'price_1TyK0ePrPYFQYWVu2uvH3wLQ',
   },
 }
 
-// Alias pour compatibilité Landing qui utilisait PRICING.founder
 PRICING.founder = PRICING.pioneer
 
 export const EXTRAS = [
