@@ -54,18 +54,17 @@ body {
 }
 .tribunal-card {
   border: 0.5px solid rgba(212,175,55,0.2); background: rgba(255,255,255,0.02);
-  border-radius: 10px; padding: 16px 18px; cursor: pointer; transition: border-color 0.3s, background 0.4s;
+  border-radius: 10px; padding: 16px 18px; cursor: pointer;
 }
 .tribunal-card.status-braise {
   background:
     radial-gradient(ellipse 120% 80% at 50% 100%, rgba(180,40,0,0.55) 0%, transparent 55%),
-    radial-gradient(ellipse 80% 50% at 20% 80%, rgba(255,80,0,0.25) 0%, transparent 50%),
     #0a0400;
   border-color: rgba(255,100,40,0.45); animation: emberPulse 3s ease-in-out infinite;
 }
 .tribunal-card.status-wings {
   background: radial-gradient(ellipse 100% 60% at 50% 0%, rgba(180,210,255,0.18) 0%, transparent 55%), rgba(255,255,255,0.03);
-  border-color: rgba(150,200,255,0.4); box-shadow: 0 0 20px rgba(140,190,255,0.12);
+  border-color: rgba(150,200,255,0.4);
 }
 .tribunal-card.status-pardon { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.06); }
 .wings-icon { display: inline-block; animation: wingGlow 2.5s ease-in-out infinite; }
@@ -74,7 +73,7 @@ body {
 .verdict-badge.braise { color: rgba(255,140,60,0.95); border-color: rgba(255,100,40,0.4); background: rgba(80,20,0,0.45); }
 .verdict-badge.pardon { color: #D4AF37; border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.08); }
 
-/* Landing marketing */
+/* Landing = design marketing d’origine */
 .landing { position: relative; z-index: 1; }
 .universe-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 .hud {
@@ -84,8 +83,8 @@ body {
   border-bottom: 0.5px solid rgba(212,175,55,0.2); backdrop-filter: blur(10px);
 }
 .hud-brand { font-size: 0.75rem; letter-spacing: 6px; color: var(--gold); font-weight: 700; }
-.hud-mid { display: flex; gap: 20px; }
-.hud-mid a { font-size: 0.5rem; letter-spacing: 2px; color: rgba(212,175,55,0.4); text-decoration: none; text-transform: uppercase; }
+.hud-mid { display: flex; gap: 24px; }
+.hud-mid a { font-size: 0.52rem; letter-spacing: 3px; color: rgba(212,175,55,0.4); text-decoration: none; text-transform: uppercase; }
 .hud-mid a:hover { color: var(--gold); }
 .hud-right { display: flex; align-items: center; gap: 12px; }
 .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 1.3s ease-in-out infinite; }
@@ -115,8 +114,9 @@ body {
 .vt-v { color: var(--gold); }
 .vt-ibe { color: transparent; -webkit-text-stroke: 2px rgba(212,175,55,0.4); }
 .hero-sub { font-size: 0.65rem; letter-spacing: 6px; color: rgba(212,175,55,0.45); text-transform: uppercase; margin-bottom: 4px; }
-.hero-origin { font-size: 0.55rem; letter-spacing: 4px; color: rgba(255,255,255,0.15); text-transform: uppercase; margin-bottom: 28px; }
-.pride-spectrum { display: flex; height: 3px; width: 240px; margin: 0 auto 32px; border-radius: 2px; overflow: hidden; }
+.hero-origin { font-size: 0.55rem; letter-spacing: 4px; color: rgba(255,255,255,0.15); text-transform: uppercase; margin-bottom: 20px; }
+.hero-lead { max-width: 400px; margin: 0 auto 28px; font-size: 0.7rem; line-height: 1.9; color: rgba(255,255,255,0.35); }
+.pride-spectrum { display: flex; height: 3px; width: 240px; margin: 0 auto 28px; border-radius: 2px; overflow: hidden; }
 .ps { flex: 1; animation: pspulse 2.5s ease-in-out infinite; }
 .ps1{background:#E40303}.ps2{background:#FF8C00}.ps3{background:#FFED00}.ps4{background:#008026}
 .ps5{background:#004DFF}.ps6{background:#750787}.ps7{background:#FFAFC8}.ps8{background:#74D7EE}
@@ -178,16 +178,24 @@ body {
 .acard-text { font-size: 0.68rem; color: rgba(255,255,255,0.28); line-height: 1.9; }
 .form-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); font-weight: 700; }
 .form-sub { font-size: 0.58rem; letter-spacing: 3px; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+.founder-block {
+  max-width: 520px; margin: 0 auto;
+  border: 1px solid rgba(212,175,55,0.4);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,0.1) 0%, transparent 60%), rgba(212,175,55,0.03);
+  padding: 36px 28px; text-align: center;
+}
+.progress-wrap { max-width: 320px; margin: 0 auto 16px; }
+.progress-bar { height: 3px; background: rgba(212,175,55,0.12); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0.8%; background: linear-gradient(90deg, var(--gold), #f0d78c); }
+.progress-label {
+  display: flex; justify-content: space-between; margin-top: 8px;
+  font-size: 0.48rem; letter-spacing: 2px; color: rgba(255,255,255,0.25); text-transform: uppercase;
+}
 .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 960px; margin: 0 auto; }
 .price-card {
   border: 0.5px solid rgba(212,175,55,0.2); padding: 24px 20px; background: rgba(255,255,255,0.02);
-  position: relative;
 }
 .price-card.featured { border-color: rgba(212,175,55,0.55); background: rgba(212,175,55,0.05); }
-.price-badge {
-  position: absolute; top: 12px; right: 12px; font-size: 0.45rem; letter-spacing: 2px;
-  color: var(--gold); border: 0.5px solid rgba(212,175,55,0.4); padding: 3px 8px;
-}
 .price-name { font-size: 0.7rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
 .price-amount { font-size: 2rem; color: #fff; font-weight: 700; margin-bottom: 8px; }
 .price-amount span { font-size: 0.6rem; color: rgba(255,255,255,0.35); font-weight: 400; }

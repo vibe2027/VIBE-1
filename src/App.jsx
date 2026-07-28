@@ -9,6 +9,8 @@ import SalonVoix from './components/SalonVoix'
 import Tribunal from './components/Tribunal'
 import AdminPanel from './components/AdminPanel'
 import PrivateChannel from './components/PrivateChannel'
+import GlobeLive from './components/GlobeLive'
+import LiveChatTranslate from './components/LiveChatTranslate'
 import { openCheckout, EXTRAS } from './lib/pricing'
 import './index.css'
 
@@ -43,7 +45,7 @@ export default function App() {
     const params = new URLSearchParams(window.location.search)
     const paid = params.get('paid')
     if (paid) {
-      setStatus(`Paiement reçu (${paid}). Merci — accès à activer sur ton compte.`)
+      setStatus(`Paiement reçu (${paid}). Merci.`)
       window.history.replaceState({}, '', window.location.pathname)
     }
   }, [])
@@ -79,9 +81,9 @@ export default function App() {
       setRevealed((r) => ({ ...r, [result.pair[0]]: true, [result.pair[1]]: true }))
       broadcastFlash(result.pair, result.at)
       setStatus('Match ! Flash global — seuls vous deux savez.')
-      setActivity((a) => [`Match privé ${result.pair.join('×')} · ${new Date().toLocaleTimeString('fr-CA')}`, ...a])
+      setActivity((a) => [`Match ${result.pair.join('×')}`, ...a])
     } else {
-      setStatus('Clic enregistré… 3 secondes pour un match mutuel.')
+      setStatus('Clic enregistré… 3 s pour un match mutuel.')
     }
   }, [broadcastFlash])
 
@@ -89,14 +91,14 @@ export default function App() {
     e?.preventDefault?.()
     const email = (loginEmail || '').trim().toLowerCase()
     if (!email || !email.includes('@')) {
-      setStatus('Entre un courriel valide.')
+      setStatus('Courriel valide requis.')
       return
     }
     const u = { email, at: Date.now() }
     localStorage.setItem('vibe_user', JSON.stringify(u))
     setUser(u)
     const r = resolveRole(email)
-    setStatus(r === 'admin' ? 'Connecté — Admin' : r === 'associate' ? 'Connecté — Associé' : 'Connecté')
+    setStatus(r === 'admin' ? 'Admin' : r === 'associate' ? 'Associé' : 'Connecté')
     setView(r === 'admin' || r === 'associate' ? 'admin' : 'home')
   }
 
@@ -110,17 +112,14 @@ export default function App() {
     const next = [g, ...grants]
     setGrants(next)
     localStorage.setItem('vibe_grants', JSON.stringify(next))
-    setStatus(`Billet ${g.duration} accordé à ${g.email}`)
-    setActivity((a) => [`Grant ${g.duration} → ${g.email} par ${g.by}`, ...a])
+    setStatus(`Billet ${g.duration} → ${g.email}`)
+    setActivity((a) => [`Grant ${g.duration} → ${g.email}`, ...a])
   }
 
   if (view === 'landing') {
     return (
       <>
-        <Landing
-          onEnter={() => setView(user ? 'home' : 'login')}
-          onLogin={() => setView('login')}
-        />
+        <Landing onEnter={() => setView(user ? 'home' : 'login')} onLogin={() => setView('login')} />
         {status && <Toast msg={status} />}
       </>
     )
@@ -130,22 +129,11 @@ export default function App() {
     return (
       <div style={{ minHeight: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <form onSubmit={login} style={{ width: '100%', maxWidth: 380 }}>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", color: '#D4AF37', textAlign: 'center', letterSpacing: 4 }}>VIBE</h1>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", color: '#D4AF37', textAlign: 'center', letterSpacing: 6 }}>VIBE</h1>
           <p style={{ fontSize: '0.55rem', letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textAlign: 'center', margin: '8px 0 28px' }}>CONNEXION</p>
-          <input
-            type="email"
-            value={loginEmail}
-            onChange={(e) => setLoginEmail(e.target.value)}
-            placeholder="ton@courriel.ca"
-            style={inputStyle}
-            autoFocus
-          />
+          <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="ton@courriel.ca" style={inputStyle} autoFocus />
           <button type="submit" style={{ ...btnPrimary, width: '100%', marginTop: 16 }}>Entrer</button>
           <button type="button" style={{ ...btnGhost, width: '100%', marginTop: 10 }} onClick={() => setView('landing')}>Retour</button>
-          <p style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.2)', marginTop: 20, textAlign: 'center', lineHeight: 1.7 }}>
-            Admin / Associé : configure VITE_ADMIN_EMAIL et VITE_ASSOCIATE_EMAIL.
-            Sans config, le premier courriel devient admin local.
-          </p>
         </form>
         {status && <Toast msg={status} />}
       </div>
@@ -162,12 +150,12 @@ export default function App() {
           <NavBtn active={view === 'home'} onClick={() => setView('home')}>Accueil</NavBtn>
           <NavBtn active={view === 'flottant'} onClick={() => setView('flottant')}>Flottant</NavBtn>
           <NavBtn active={view === 'voix'} onClick={() => setView('voix')}>Voix</NavBtn>
+          <NavBtn active={view === 'globe'} onClick={() => setView('globe')}>Globe</NavBtn>
+          <NavBtn active={view === 'traduire'} onClick={() => setView('traduire')}>Traduction</NavBtn>
           <NavBtn active={view === 'tribunal'} onClick={() => setView('tribunal')}>Tribunal</NavBtn>
           <NavBtn active={view === 'tarifs'} onClick={() => setView('tarifs')}>Tarifs</NavBtn>
           {isStaff && <NavBtn active={view === 'admin'} onClick={() => setView('admin')}>{role === 'admin' ? 'Admin' : 'Associé'}</NavBtn>}
-          {(role === 'admin' || role === 'associate') && (
-            <NavBtn active={view === 'private'} onClick={() => setView('private')}>Canal privé</NavBtn>
-          )}
+          {isStaff && <NavBtn active={view === 'private'} onClick={() => setView('private')}>Privé</NavBtn>}
           {user ? (
             <button type="button" onClick={logout} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', fontSize: '0.5rem', cursor: 'pointer', fontFamily: 'inherit' }}>Sortir</button>
           ) : (
@@ -183,32 +171,32 @@ export default function App() {
           {user && <p style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.3)', marginTop: 12 }}>{user.email} · {role}</p>}
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', marginTop: 32 }}>
             <button type="button" style={btnPrimary} onClick={() => setView('flottant')}>Salon Flottant</button>
+            <button type="button" style={btnGhost} onClick={() => setView('globe')}>Globe</button>
+            <button type="button" style={btnGhost} onClick={() => setView('traduire')}>Traduction</button>
             <button type="button" style={btnGhost} onClick={() => setView('tribunal')}>Tribunal</button>
-            <button type="button" style={btnGhost} onClick={() => setView('tarifs')}>Tarifs Stripe</button>
           </div>
         </header>
       )}
 
       {view === 'flottant' && (
-        <SalonFlottant myId={MY_ID} revealed={revealed} onClickProfile={onClickProfile} onRevealSelf={(id) => { setRevealed((r) => ({ ...r, [id]: true })); setStatus('Fumée dissipée.') }} />
+        <SalonFlottant
+          myId={MY_ID}
+          revealed={revealed}
+          onClickProfile={onClickProfile}
+          onRevealSelf={(id) => { setRevealed((r) => ({ ...r, [id]: true })); setStatus('Fumée dissipée.') }}
+        />
       )}
       {view === 'voix' && <SalonVoix />}
+      {view === 'globe' && <GlobeLive onSelect={(p) => setStatus(`${p.label} · ${p.city}`)} />}
+      {view === 'traduire' && <LiveChatTranslate />}
       {view === 'tribunal' && (
-        <Tribunal
-          onStatus={setStatus}
-          onPardon={() => openCheckout(EXTRAS.find((x) => x.id === 'pardon_25')?.url)}
-        />
+        <Tribunal onStatus={setStatus} onPardon={() => openCheckout(EXTRAS.find((x) => x.id === 'pardon_25')?.url)} />
       )}
       {view === 'admin' && isStaff && (
         <AdminPanel role={role} email={user.email} grants={grants} onGrant={onGrant} activity={activity} />
       )}
       {view === 'private' && isStaff && <PrivateChannel email={user.email} />}
-
-      {view === 'tarifs' && (
-        <section style={{ padding: '24px 16px', maxWidth: 900, margin: '0 auto' }}>
-          <Landing onEnter={() => {}} onLogin={() => setView('login')} />
-        </section>
-      )}
+      {view === 'tarifs' && <Landing onEnter={() => {}} onLogin={() => setView('login')} />}
 
       {status && <Toast msg={status} />}
       {myMatch && (
