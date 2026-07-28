@@ -3,152 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="VIBE — Réseau LGBTQ+ Canadien. 500 Pass Fondateur à 99 $ (paiement unique). Né à Québec.">
+<meta name="description" content="VIBE — Réseau LGBTQ+ Canadien. 500 Pass Pionnier à 99 $ (1 seul versement). Né à Québec.">
 <title>VIBE — Réseau LGBTQ+ Canadien</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold: #D4AF37;
-  --bg: #000;
-  --text: rgba(255,255,255,0.75);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Space Mono', monospace;
-  overflow-x: hidden;
-}
-#universe { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-.hud {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 20px; background: rgba(0,0,0,0.92);
-  border-bottom: 0.5px solid rgba(212,175,55,0.2); backdrop-filter: blur(10px);
-}
-.hud-brand { font-size: 0.75rem; letter-spacing: 6px; color: var(--gold); font-weight: 700; }
-.hud-mid { display: flex; gap: 24px; }
-.hud-mid a {
-  font-size: 0.52rem; letter-spacing: 3px; color: rgba(212,175,55,0.4);
-  text-decoration: none; text-transform: uppercase;
-}
-.hud-mid a:hover { color: var(--gold); }
-.pulse-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
-  animation: blink 1.3s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
-.hero {
-  position: relative; z-index: 10; min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 100px 24px 60px;
-}
-.dna-container { position: relative; width: 180px; height: 180px; margin: 0 auto 36px; }
-.orbit { position: absolute; border-radius: 50%; border: 0.5px solid; }
-.orbit1 { top:-12px; left:-12px; width:204px; height:204px; border-color:rgba(212,175,55,0.25); animation: spin 12s linear infinite; }
-.orbit2 { top:-22px; left:-22px; width:224px; height:224px; border-color:rgba(180,79,255,0.12); animation: spin 18s linear infinite reverse; }
-@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-.vibe-logo {
-  width: 140px; height: 140px; border-radius: 50%; border: 1px solid rgba(212,175,55,0.3);
-  display: flex; align-items: center; justify-content: center; margin: 0 auto;
-  background: radial-gradient(ellipse at center, rgba(212,175,55,0.05) 0%, transparent 70%);
-}
-.vibe-logo-text { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); letter-spacing: 4px; }
-.vibe-title { font-family: 'Playfair Display', serif; font-size: clamp(4rem, 12vw, 7rem); font-weight: 700; line-height: 1; margin-bottom: 8px; }
-.vt-v { color: var(--gold); }
-.vt-ibe { color: transparent; -webkit-text-stroke: 2px rgba(212,175,55,0.4); }
-.hero-sub { font-size: 0.65rem; letter-spacing: 6px; color: rgba(212,175,55,0.45); text-transform: uppercase; margin-bottom: 4px; }
-.hero-origin { font-size: 0.55rem; letter-spacing: 4px; color: rgba(255,255,255,0.15); text-transform: uppercase; margin-bottom: 20px; }
-.hero-lead { max-width: 400px; margin: 0 auto 28px; font-size: 0.7rem; line-height: 1.9; color: rgba(255,255,255,0.35); }
-.pride-spectrum { display: flex; height: 3px; width: 240px; margin: 0 auto 28px; border-radius: 2px; overflow: hidden; }
-.ps { flex: 1; animation: pspulse 2.5s ease-in-out infinite; }
-.ps1{background:#E40303}.ps2{background:#FF8C00}.ps3{background:#FFED00}.ps4{background:#008026}
-.ps5{background:#004DFF}.ps6{background:#750787}.ps7{background:#FFAFC8}.ps8{background:#74D7EE}
-@keyframes pspulse { 0%,100%{opacity:.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(2.5)} }
-.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 48px; }
-.btn-primary {
-  display: inline-block; background: transparent; color: var(--gold);
-  border: 1px solid rgba(212,175,55,0.6); padding: 15px 40px; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 5px; text-transform: uppercase; text-decoration: none; font-family: inherit;
-  cursor: pointer; position: relative; overflow: hidden;
-}
-.btn-primary::before {
-  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
-  background: var(--gold); z-index:0; transition: left 0.4s;
-}
-.btn-primary:hover::before { left: 0; }
-.btn-primary:hover { color: #000; }
-.btn-primary span { position: relative; z-index: 1; }
-.btn-ghost {
-  display: inline-block; background: transparent; color: rgba(212,175,55,0.45);
-  border: 0.5px solid rgba(212,175,55,0.2); padding: 15px 32px; font-size: 0.72rem;
-  letter-spacing: 4px; text-transform: uppercase; text-decoration: none; font-family: inherit;
-}
-.btn-ghost:hover { color: var(--gold); border-color: rgba(212,175,55,0.5); }
-.stats-strip {
-  position: relative; z-index: 10; display: flex; justify-content: space-around;
-  border-top: 0.5px solid rgba(212,175,55,0.1); border-bottom: 0.5px solid rgba(212,175,55,0.1);
-}
-.stat-cell { flex: 1; padding: 28px 12px; text-align: center; border-right: 0.5px solid rgba(212,175,55,0.07); }
-.stat-cell:last-child { border-right: none; }
-.stat-n { display: block; font-size: 1.8rem; color: var(--gold); font-weight: 700; letter-spacing: 2px; margin-bottom: 4px; }
-.stat-l { display: block; font-size: 0.5rem; letter-spacing: 3px; color: rgba(255,255,255,0.2); text-transform: uppercase; }
-.ticker {
-  overflow: hidden; white-space: nowrap; padding: 9px 0;
-  border-bottom: 0.5px solid rgba(212,175,55,0.07); position: relative; z-index: 10;
-}
-.ticker-inner {
-  display: inline-block; animation: tickrun 40s linear infinite;
-  font-size: 0.5rem; letter-spacing: 5px; color: rgba(212,175,55,0.22);
-}
-@keyframes tickrun { to { transform: translateX(-50%); } }
-.section { position: relative; z-index: 10; padding: 70px 24px; max-width: 1100px; margin: 0 auto; }
-.section-label { font-size: 0.55rem; letter-spacing: 6px; color: rgba(212,175,55,0.35); text-transform: uppercase; text-align: center; margin-bottom: 16px; }
-.section-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); text-align: center; margin-bottom: 12px; }
-.section-lead { text-align: center; font-size: 0.7rem; line-height: 1.9; color: rgba(255,255,255,0.35); max-width: 520px; margin: 0 auto 36px; }
-.founder-block {
-  max-width: 520px; margin: 0 auto 40px; border: 1px solid rgba(212,175,55,0.4);
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,0.1) 0%, transparent 60%), rgba(212,175,55,0.03);
-  padding: 36px 28px; text-align: center;
-}
-.founder-price { font-size: 2.8rem; color: #fff; font-weight: 700; margin: 12px 0; }
-.founder-price small { font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 400; }
-.founder-note { font-size: 0.62rem; line-height: 1.85; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
-.founder-note strong { color: rgba(212,175,55,0.85); }
-.progress-bar { height: 3px; background: rgba(212,175,55,0.12); max-width: 320px; margin: 0 auto; border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; width: 0.8%; background: var(--gold); }
-.progress-label { display: flex; justify-content: space-between; max-width: 320px; margin: 8px auto 20px; font-size: 0.48rem; letter-spacing: 2px; color: rgba(255,255,255,0.25); text-transform: uppercase; }
-.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-.price-card { border: 0.5px solid rgba(212,175,55,0.18); padding: 28px 22px; background: rgba(255,255,255,0.02); }
-.price-card h3 { font-size: 0.65rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
-.price-card .amt { font-size: 2rem; color: #fff; font-weight: 700; margin-bottom: 8px; }
-.price-card .amt span { font-size: 0.55rem; color: rgba(255,255,255,0.35); font-weight: 400; }
-.price-card p { font-size: 0.6rem; color: rgba(255,255,255,0.32); line-height: 1.7; margin-bottom: 16px; }
-.btn-block { width: 100%; text-align: center; padding: 12px; font-size: 0.58rem; }
-.extras-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-.extra { border: 0.5px solid rgba(212,175,55,0.12); padding: 22px 18px; }
-.extra h4 { font-size: 0.62rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
-.extra .amt { font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
-.extra p { font-size: 0.58rem; color: rgba(255,255,255,0.3); line-height: 1.7; margin-bottom: 12px; }
-.ange-box { border: 0.5px solid rgba(255,80,80,0.22); padding: 24px; max-width: 560px; margin: 0 auto 36px; background: rgba(255,80,80,0.02); }
-.ange-box .tag { font-size: 0.5rem; letter-spacing: 4px; color: rgba(255,100,100,0.65); text-transform: uppercase; margin-bottom: 12px; }
-.ange-box p { font-size: 0.7rem; color: rgba(255,255,255,0.35); line-height: 2; }
-.ange-box strong { color: rgba(255,120,120,0.9); }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: rgba(212,175,55,0.07); }
-.feature { background: #000; padding: 28px 22px; }
-.feature .ico { font-size: 1.3rem; margin-bottom: 12px; display: block; }
-.feature h4 { font-size: 0.65rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
-.feature p { font-size: 0.62rem; color: rgba(255,255,255,0.28); line-height: 1.85; }
-footer { position: relative; z-index: 10; border-top: 0.5px solid rgba(212,175,55,0.1); padding: 36px 24px; text-align: center; }
-footer .brand { font-size: 0.65rem; letter-spacing: 6px; color: rgba(212,175,55,0.3); font-weight: 700; margin-bottom: 10px; }
-footer .copy { font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,0.1); text-transform: uppercase; }
-@media (max-width: 600px) {
-  .hud-mid { display: none; }
-  .stats-strip { flex-wrap: wrap; }
-  .stat-cell { min-width: 50%; }
-}
+:root{--gold:#D4AF37;--bg:#000;--text:rgba(255,255,255,0.75)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;overflow-x:hidden}
+#universe{position:fixed;inset:0;z-index:0;pointer-events:none}
+.hud{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.92);border-bottom:0.5px solid rgba(212,175,55,0.2);backdrop-filter:blur(10px)}
+.hud-brand{font-size:0.75rem;letter-spacing:6px;color:var(--gold);font-weight:700}
+.hud-mid{display:flex;gap:24px}
+.hud-mid a{font-size:0.52rem;letter-spacing:3px;color:rgba(212,175,55,0.4);text-decoration:none;text-transform:uppercase}
+.hud-mid a:hover{color:var(--gold)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.3s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.hero{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px}
+.dna-container{position:relative;width:180px;height:180px;margin:0 auto 36px}
+.orbit{position:absolute;border-radius:50%;border:0.5px solid}
+.orbit1{top:-12px;left:-12px;width:204px;height:204px;border-color:rgba(212,175,55,0.25);animation:spin 12s linear infinite}
+.orbit2{top:-22px;left:-22px;width:224px;height:224px;border-color:rgba(180,79,255,0.12);animation:spin 18s linear infinite reverse}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.vibe-logo{width:140px;height:140px;border-radius:50%;border:1px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto;background:radial-gradient(ellipse at center,rgba(212,175,55,0.05) 0%,transparent 70%)}
+.vibe-logo-text{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gold);letter-spacing:4px}
+.vibe-title{font-family:'Playfair Display',serif;font-size:clamp(4rem,12vw,7rem);font-weight:700;line-height:1;margin-bottom:8px}
+.vt-v{color:var(--gold)}.vt-ibe{color:transparent;-webkit-text-stroke:2px rgba(212,175,55,0.4)}
+.hero-sub{font-size:0.65rem;letter-spacing:6px;color:rgba(212,175,55,0.45);text-transform:uppercase;margin-bottom:4px}
+.hero-origin{font-size:0.55rem;letter-spacing:4px;color:rgba(255,255,255,0.15);text-transform:uppercase;margin-bottom:20px}
+.hero-lead{max-width:400px;margin:0 auto 28px;font-size:0.7rem;line-height:1.9;color:rgba(255,255,255,0.35)}
+.pride-spectrum{display:flex;height:3px;width:240px;margin:0 auto 28px;border-radius:2px;overflow:hidden}
+.ps{flex:1;animation:pspulse 2.5s ease-in-out infinite}
+.ps1{background:#E40303}.ps2{background:#FF8C00}.ps3{background:#FFED00}.ps4{background:#008026}.ps5{background:#004DFF}.ps6{background:#750787}.ps7{background:#FFAFC8}.ps8{background:#74D7EE}
+@keyframes pspulse{0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(2.5)}}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:48px}
+.btn-primary{display:inline-block;background:transparent;color:var(--gold);border:1px solid rgba(212,175,55,0.6);padding:15px 40px;font-size:0.72rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;text-decoration:none;font-family:inherit;cursor:pointer;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);z-index:0;transition:left 0.4s}
+.btn-primary:hover::before{left:0}.btn-primary:hover{color:#000}.btn-primary span{position:relative;z-index:1}
+.btn-ghost{display:inline-block;background:transparent;color:rgba(212,175,55,0.45);border:0.5px solid rgba(212,175,55,0.2);padding:15px 32px;font-size:0.72rem;letter-spacing:4px;text-transform:uppercase;text-decoration:none;font-family:inherit}
+.btn-ghost:hover{color:var(--gold);border-color:rgba(212,175,55,0.5)}
+.stats-strip{position:relative;z-index:10;display:flex;justify-content:space-around;border-top:0.5px solid rgba(212,175,55,0.1);border-bottom:0.5px solid rgba(212,175,55,0.1)}
+.stat-cell{flex:1;padding:28px 12px;text-align:center;border-right:0.5px solid rgba(212,175,55,0.07)}.stat-cell:last-child{border-right:none}
+.stat-n{display:block;font-size:1.8rem;color:var(--gold);font-weight:700;letter-spacing:2px;margin-bottom:4px}
+.stat-l{display:block;font-size:0.5rem;letter-spacing:3px;color:rgba(255,255,255,0.2);text-transform:uppercase}
+.ticker{overflow:hidden;white-space:nowrap;padding:9px 0;border-bottom:0.5px solid rgba(212,175,55,0.07);position:relative;z-index:10}
+.ticker-inner{display:inline-block;animation:tickrun 40s linear infinite;font-size:0.5rem;letter-spacing:5px;color:rgba(212,175,55,0.22)}
+@keyframes tickrun{to{transform:translateX(-50%)}}
+.section{position:relative;z-index:10;padding:70px 24px;max-width:1100px;margin:0 auto}
+.section-label{font-size:0.55rem;letter-spacing:6px;color:rgba(212,175,55,0.35);text-transform:uppercase;text-align:center;margin-bottom:16px}
+.section-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);text-align:center;margin-bottom:12px}
+.section-lead{text-align:center;font-size:0.7rem;line-height:1.9;color:rgba(255,255,255,0.35);max-width:520px;margin:0 auto 36px}
+.founder-block{max-width:520px;margin:0 auto 40px;border:1px solid rgba(212,175,55,0.4);background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(212,175,55,0.1) 0%,transparent 60%),rgba(212,175,55,0.03);padding:36px 28px;text-align:center}
+.founder-price{font-size:2.8rem;color:#fff;font-weight:700;margin:12px 0}
+.founder-price small{font-size:0.65rem;color:rgba(255,255,255,0.4);font-weight:400}
+.founder-note{font-size:0.62rem;line-height:1.85;color:rgba(255,255,255,0.4);margin-bottom:20px}
+.founder-note strong{color:rgba(212,175,55,0.85)}
+.progress-bar{height:3px;background:rgba(212,175,55,0.12);max-width:320px;margin:0 auto;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;width:0.8%;background:var(--gold)}
+.progress-label{display:flex;justify-content:space-between;max-width:320px;margin:8px auto 20px;font-size:0.48rem;letter-spacing:2px;color:rgba(255,255,255,0.25);text-transform:uppercase}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.price-card{border:0.5px solid rgba(212,175,55,0.18);padding:28px 22px;background:rgba(255,255,255,0.02)}
+.price-card h3{font-size:0.65rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.price-card .amt{font-size:2rem;color:#fff;font-weight:700;margin-bottom:8px}
+.price-card .amt span{font-size:0.55rem;color:rgba(255,255,255,0.35);font-weight:400}
+.price-card p{font-size:0.6rem;color:rgba(255,255,255,0.32);line-height:1.7;margin-bottom:16px}
+.btn-block{width:100%;text-align:center;padding:12px;font-size:0.58rem}
+.extras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.extra{border:0.5px solid rgba(212,175,55,0.12);padding:22px 18px}
+.extra h4{font-size:0.62rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.extra .amt{font-size:1.3rem;color:#fff;margin-bottom:8px}
+.extra p{font-size:0.58rem;color:rgba(255,255,255,0.3);line-height:1.7;margin-bottom:12px}
+.ange-box{border:0.5px solid rgba(255,80,80,0.22);padding:24px;max-width:560px;margin:0 auto 36px;background:rgba(255,80,80,0.02)}
+.ange-box .tag{font-size:0.5rem;letter-spacing:4px;color:rgba(255,100,100,0.65);text-transform:uppercase;margin-bottom:12px}
+.ange-box p{font-size:0.7rem;color:rgba(255,255,255,0.35);line-height:2}
+.ange-box strong{color:rgba(255,120,120,0.9)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(212,175,55,0.07)}
+.feature{background:#000;padding:28px 22px}
+.feature .ico{font-size:1.3rem;margin-bottom:12px;display:block}
+.feature h4{font-size:0.65rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.feature p{font-size:0.62rem;color:rgba(255,255,255,0.28);line-height:1.85}
+footer{position:relative;z-index:10;border-top:0.5px solid rgba(212,175,55,0.1);padding:36px 24px;text-align:center}
+footer .brand{font-size:0.65rem;letter-spacing:6px;color:rgba(212,175,55,0.3);font-weight:700;margin-bottom:10px}
+footer .copy{font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.1);text-transform:uppercase}
+@media(max-width:600px){.hud-mid{display:none}.stats-strip{flex-wrap:wrap}.stat-cell{min-width:50%}}
 </style>
 </head>
 <body>
@@ -157,7 +95,7 @@ footer .copy { font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,
   <div class="hud-brand">VIBE</div>
   <div class="hud-mid">
     <a href="#accueil">Accueil</a>
-    <a href="#fondateur">Fondateur</a>
+    <a href="#pionnier">Pionnier</a>
     <a href="#tarifs">Tarifs</a>
     <a href="#extras">Extras</a>
     <a href="#ange">Mode Ange</a>
@@ -179,27 +117,27 @@ footer .copy { font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,
   </div>
   <p class="hero-lead">Salons immersifs. Mode Fantôme. Matchs secrets. Tribunal. Mode Ange.</p>
   <div class="hero-btns">
-    <a class="btn-primary" href="#fondateur"><span>Devenir Fondateur</span></a>
+    <a class="btn-primary" href="#pionnier"><span>Devenir Pionnier</span></a>
     <a class="btn-ghost" href="#tarifs">Voir les tarifs</a>
   </div>
 </section>
 <div class="stats-strip">
-  <div class="stat-cell"><span class="stat-n">500</span><span class="stat-l">Places Fondateur</span></div>
-  <div class="stat-cell"><span class="stat-n">99$</span><span class="stat-l">1 versement / an</span></div>
+  <div class="stat-cell"><span class="stat-n">500</span><span class="stat-l">Places Pionnier</span></div>
+  <div class="stat-cell"><span class="stat-n">99$</span><span class="stat-l">1 versement</span></div>
   <div class="stat-cell"><span class="stat-n">5</span><span class="stat-l">Villes Actives</span></div>
   <div class="stat-cell"><span class="stat-n">0</span><span class="stat-l">Données vendues</span></div>
 </div>
-<div class="ticker"><span class="ticker-inner">VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · 500 FONDATEURS · 99$ UNIQUE ·&nbsp;</span></div>
-<section class="section" id="fondateur">
+<div class="ticker"><span class="ticker-inner">VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · 500 PIONNIERS · 99$ UNIQUE ·&nbsp;VIBE · LGBTQ+ · QUÉBEC · MONTRÉAL · TORONTO · VANCOUVER · OTTAWA · CALGARY · MODE ANGE · 500 PIONNIERS · 99$ UNIQUE ·&nbsp;</span></div>
+<section class="section" id="pionnier">
   <p class="section-label">// Édition limitée</p>
-  <h2 class="section-title">Pass Fondateur</h2>
-  <p class="section-lead">500 billets · un seul versement · ensuite tarifs réguliers seulement</p>
+  <h2 class="section-title">Pass Pionnier</h2>
+  <p class="section-lead">500 billets · 99 $ · un seul versement · pas de mois ni d’abonnement sur ce pass</p>
   <div class="founder-block">
     <div class="founder-price">99 $ <small>CAD · 1 versement</small></div>
-    <p class="founder-note"><strong>Pas de mensualités.</strong> Tu paies une fois → actif 1 an. Après 500 places : ce prix ne revient jamais.</p>
+    <p class="founder-note"><strong>Un seul paiement.</strong> Pas de mensualité. Tu paies une fois → actif 1 an. Après 500 places : ce prix ne revient jamais.</p>
     <div class="progress-bar"><div class="progress-fill"></div></div>
     <div class="progress-label"><span>~4 / 500</span><span>~496 restantes</span></div>
-    <a class="btn-primary btn-block" href="https://buy.stripe.com/28E14pgjE0nR5KM7HN9R608" target="_blank" rel="noopener"><span>Réserver — 99 $</span></a>
+    <a class="btn-primary btn-block" href="https://buy.stripe.com/5kQ6oJ8Rc1rVb563rx9R609" target="_blank" rel="noopener"><span>Réserver — 99 $ (1 versement)</span></a>
   </div>
 </section>
 <section class="section" id="tarifs" style="padding-top:0">
@@ -208,16 +146,16 @@ footer .copy { font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,
   <div class="price-grid">
     <div class="price-card"><h3>Hebdomadaire</h3><div class="amt">4,99 $ <span>/ sem.</span></div><p>Accès complet</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/fZu28t0kG8Un7SU8LR9R603" target="_blank" rel="noopener">Choisir</a></div>
     <div class="price-card"><h3>Mensuel</h3><div class="amt">12,99 $ <span>/ mois</span></div><p>Accès complet</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/fZubJ3ebw1rV5KM5zF9R601" target="_blank" rel="noopener">Choisir</a></div>
-    <div class="price-card"><h3>Annuel</h3><div class="amt">99 $ <span>/ an</span></div><p>Tarif régulier post-fondateurs</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602" target="_blank" rel="noopener">Choisir</a></div>
+    <div class="price-card"><h3>Annuel</h3><div class="amt">99 $ <span>/ an</span></div><p>Tarif régulier post-pionniers</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/6oU14p3wSc6zgpqe6b9R602" target="_blank" rel="noopener">Choisir</a></div>
   </div>
 </section>
 <section class="section" id="extras">
   <p class="section-label">// Extras</p>
   <h2 class="section-title">Achat unique</h2>
   <div class="extras-grid">
-    <div class="extra"><h4>Boost 24h</h4><div class="amt">4,99 $</div><p>En tête de la découverte</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/eVqeVf3wSc6zflm1jp9R604" target="_blank" rel="noopener">Acheter</a></div>
-    <div class="extra"><h4>Fantôme 7j</h4><div class="amt">7,99 $</div><p>Invisible 7 jours</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/7sY28t7N8b2v4GI7HN9R605" target="_blank" rel="noopener">Acheter</a></div>
-    <div class="extra"><h4>Visiteurs 7j</h4><div class="amt">5,99 $</div><p>Qui m’a visité</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/7sY5kFgjE8Un4GId279R606" target="_blank" rel="noopener">Acheter</a></div>
+    <div class="extra"><h4>Boost 7 jours</h4><div class="amt">7,99 $</div><p>En tête de la découverte 7 j</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/fZu28t9Vg1rV1uwd279R60a" target="_blank" rel="noopener">Acheter</a></div>
+    <div class="extra"><h4>Fantôme 7 jours</h4><div class="amt">9,99 $</div><p>Fumée dense 7 jours</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/fZu3cx4AW6Mfb565zF9R60b" target="_blank" rel="noopener">Acheter</a></div>
+    <div class="extra"><h4>Visite 7 jours</h4><div class="amt">6,99 $</div><p>Qui m’a visité</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/eVq9AVgjE8Un0qs6DJ9R60c" target="_blank" rel="noopener">Acheter</a></div>
     <div class="extra"><h4>Pardon</h4><div class="amt">25 $</div><p>Tribunal</p><a class="btn-ghost btn-block" href="https://buy.stripe.com/dRmcN79VgeeHc9aaTZ9R607" target="_blank" rel="noopener">Acheter</a></div>
   </div>
 </section>
@@ -240,12 +178,7 @@ footer .copy { font-size: 0.42rem; letter-spacing: 2px; color: rgba(255,255,255,
   <div class="copy">© 2026 VIBE · Québec, Canada · Loi 25 · Stripe</div>
 </footer>
 <script>
-(function(){
-  var canvas=document.getElementById('universe'),ctx=canvas.getContext('2d'),stars=[];
-  function resize(){canvas.width=innerWidth;canvas.height=innerHeight;stars=[];for(var i=0;i<180;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2,a:Math.random(),speed:0.0003+Math.random()*0.0005});}
-  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(function(s){s.a+=s.speed;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(212,175,55,'+(0.1+Math.abs(Math.sin(s.a))*0.5)+')';ctx.fill();});requestAnimationFrame(draw);}
-  addEventListener('resize',resize);resize();draw();
-})();
+(function(){var c=document.getElementById('universe'),x=c.getContext('2d'),s=[];function r(){c.width=innerWidth;c.height=innerHeight;s=[];for(var i=0;i<180;i++)s.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2,a:Math.random(),speed:0.0003+Math.random()*0.0005})}function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(t){t.a+=t.speed;x.beginPath();x.arc(t.x,t.y,t.r,0,Math.PI*2);x.fillStyle='rgba(212,175,55,'+(0.1+Math.abs(Math.sin(t.a))*0.5)+')';x.fill()});requestAnimationFrame(d)}addEventListener('resize',r);r();d()})();
 </script>
 </body>
 </html>
