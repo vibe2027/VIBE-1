@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { supabase, supabaseConfigured } from './supabaseClient'
 import { recordClick, MATCH_CHANNEL } from './lib/matchEngine'
 import { resolveRole } from './lib/roles'
@@ -121,6 +122,7 @@ export default function App() {
       <>
         <Landing onEnter={() => setView(user ? 'home' : 'login')} onLogin={() => setView('login')} />
         {status && <Toast msg={status} />}
+        <Analytics />
       </>
     )
   }
@@ -136,6 +138,7 @@ export default function App() {
           <button type="button" style={{ ...btnGhost, width: '100%', marginTop: 10 }} onClick={() => setView('landing')}>Retour</button>
         </form>
         {status && <Toast msg={status} />}
+        <Analytics />
       </div>
     )
   }
@@ -204,6 +207,7 @@ export default function App() {
           Match privé : {myMatch.pair.join(' × ')}
         </p>
       )}
+      <Analytics />
     </div>
   )
 }
